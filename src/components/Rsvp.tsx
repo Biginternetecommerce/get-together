@@ -4,8 +4,11 @@ import gsap from "gsap";
 import { Octopus, Pearl, Shell, Sparkle } from "./Art";
 import { chime } from "@/lib/sound";
 import { invitation as cfg } from "@/config/invitation";
-import ShellButton3D from "./ShellButton3D";
+import dynamic from "next/dynamic";
 import Lazy3D from "./Lazy3D";
+
+// three.js is only fetched when the 3D shell buttons are about to appear (keeps the first page load light)
+const ShellButton3D = dynamic(() => import("./ShellButton3D"), { ssr: false });
 
 function addToCalendar() {
   const ev = cfg.event; if (!ev.startIso) return;

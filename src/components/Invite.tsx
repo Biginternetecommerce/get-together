@@ -42,7 +42,7 @@ const SHELLS: { name: string; fill: string }[] = [
 export default function Invite() {
   const [stage, setStage] = useState<Stage>("cover");
   const [noVideo, setNoVideo] = useState(false);
-  const [muted, setMuted] = useState(false);
+  const [ready, setReady] = useState(false); // intro video buffered - so it plays without pausing
   const v = useRef<HTMLVideoElement>(null), lp = useRef<HTMLVideoElement>(null), a = useRef<HTMLAudioElement>(null);
 
   // desktop / landscape screens get the 16:9 video and a button-driven slide to RSVP instead of scrolling
@@ -61,17 +61,19 @@ export default function Invite() {
     window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k);
   }, [wide]);
 
+  useEffect(() => { const t = setTimeout(() => setReady(true), 7000); return () => clearTimeout(t); }, []); // never keep anyone waiting longer than this
+  useEffect(() => { setReady(false); const el = v.current; if (el && el.readyState >= 4) setReady(true); }, [wide]);
+
   function finish() { setStage("open"); window.scrollTo(0, 0); lp.current?.play().catch(() => {}); } // reef keeps moving behind the card
 
   async function start() {
     const el = v.current, au = a.current;
-    if (au) { au.currentTime = 0; au.play().catch(() => {}); } // music starts with the tap (phones require a gesture)
+    if (au) { au.muted = false; au.currentTime = 0; au.play().catch(() => {}); } // music starts ON with the tap (phones require a gesture)
     if (!el || noVideo) return finish();
     setStage("playing");
     el.muted = true; el.currentTime = 0;
     try { await el.play(); } catch { finish(); }
   }
-  function toggleMusic() { const au = a.current; if (!au) return; const m = !muted; au.muted = m; setMuted(m); if (!m) au.play().catch(() => {}); }
 
   return (
     <div className={`iv stage-${stage}${wide ? " wide" : ""} panel-${panel}`}>
@@ -80,25 +82,23 @@ export default function Invite() {
       {wide !== null && <>
         <video
           key={`i${wide}`} ref={v} className={`iv-video${noVideo ? " nov" : ""}`} playsInline muted preload="auto" poster={media.poster} aria-hidden
-          onEnded={finish} onError={() => setNoVideo(true)}
+          onEnded={finish} onCanPlayThrough={() => setReady(true)} onError={() => { setNoVideo(true); setReady(true); }}
         >
           <source src={media.video} type="video/mp4" />
         </video>
         <video key={`l${wide}`} ref={lp} className="iv-video iv-loop" playsInline muted loop preload="auto" src={media.loop} aria-hidden />
       </>}
       <audio ref={a} src={iv.music} loop preload="auto" />
-      {stage !== "cover" && <button className="iv-sound" onClick={toggleMusic} aria-label={muted ? "Unmute music" : "Mute music"} aria-pressed={muted}>{muted ? "🔇" : "🔊"}</button>}
 
       {/* tap to open - a tap is required so the phone allows the music to play */}
       <div className="iv-cover" aria-hidden={stage !== "cover"}>
         <p className="iv-open-line">{cfg.copy.envelopeLine}</p>
-        <button className="iv-open" onClick={start} tabIndex={stage === "cover" ? 0 : -1}>
+        <button className="iv-open" onClick={start} disabled={!ready} tabIndex={stage === "cover" ? 0 : -1}>
           <span className="iv-open-ring" />
-          <span className="iv-open-txt">{wide ? "Click to open" : "Tap to open"}</span>
+          <span className="iv-open-txt">{!ready ? "Loading…" : wide ? "Click to open" : "Tap to open"}</span>
           <small>{noVideo ? "Aurora’s invitation" : "🔊 turn on your sound"}</small>
         </button>
       </div>
-      {stage === "playing" && <button className="iv-skip" onClick={finish}>Skip ›</button>}
 
       {wide && stage === "open" && <>
         {panel > 0 && <button className="iv-nav prev" onClick={() => setPanel(panel - 1)} aria-label="Previous"><b>‹</b><span>{panel === 1 ? "Invitation" : "RSVP"}</span></button>}

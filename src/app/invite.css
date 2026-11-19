@@ -262,3 +262,13 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .done-line { max-width: 30em; margin-left: auto !important; margin-right: auto !important; }
 .rs-saved { margin: 4px 0 10px; font-size: .95rem; }
 .rs-with { margin: 12px 0 14px; font: 600 1.1rem var(--display); color: #4f2f8c; } .rs-with b { font: 400 1.9rem/1 var(--font-script), cursive; color: #6a32b8; }
+
+/* ===== performance ===== */
+/* big blurs over a playing video are costly on phones: lighter blur there, full blur on desktop */
+@media (max-width: 899px) {
+  .iv-card, .iv-loc-card, .iv-rsvp .rsvp-card { -webkit-backdrop-filter: blur(9px) saturate(1.25); backdrop-filter: blur(9px) saturate(1.25); }
+}
+.iv-video { will-change: auto; transform: translate3d(-50%, 0, 0); } /* own GPU layer, no repaint while the card scrolls */
+.iv-cover { contain: layout paint; }
+.iv-open:disabled { opacity: .85; cursor: progress; }
+@media (prefers-reduced-motion: reduce) { .iv-rsvp-big, .iv-nav.next { animation: none; } }
