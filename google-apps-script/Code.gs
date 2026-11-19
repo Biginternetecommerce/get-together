@@ -36,7 +36,7 @@ function doPost(e) {
         sh.setFrozenRows(1);
       }
       const names = (d.guestNames || []).join(', ');
-      sh.appendRow([new Date(), d.name, d.attending ? 'Yes' : 'No', d.attending ? d.guests : 0, names, d.phone || '', d.message || '']);
+      sh.appendRow([new Date(), safe(d.name), d.attending ? 'Yes' : 'No', d.attending ? d.guests : 0, safe(names), safe(d.phone), safe(d.message)]);
     } finally {
       lock.releaseLock();
     }
@@ -60,6 +60,9 @@ function doPost(e) {
     return out({ ok: false, error: String(err) });
   }
 }
+
+/** Text that starts with = + - @ (e.g. a phone number like +91 98...) would be read by Sheets as a formula (#ERROR!). A leading apostrophe stores it as plain text. */
+function safe(v) { v = (v == null) ? '' : String(v); return /^[=+\-@]/.test(v) ? "'" + v : v; }
 
 function doGet() { return out({ ok: true, hello: 'Aurora RSVP endpoint is live' }); }
 function out(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
