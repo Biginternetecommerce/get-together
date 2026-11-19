@@ -23,6 +23,7 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d.secret !== SECRET) return out({ ok: false, error: 'unauthorized' });
+    if (d.action === 'ping') return out({ ok: true, pong: true }); // connection test: checks the secret, writes nothing, sends no email
 
     const lock = LockService.getScriptLock();
     lock.waitLock(20000);
@@ -64,5 +65,5 @@ function doPost(e) {
 /** Text that starts with = + - @ (e.g. a phone number like +91 98...) would be read by Sheets as a formula (#ERROR!). A leading apostrophe stores it as plain text. */
 function safe(v) { v = (v == null) ? '' : String(v); return /^[=+\-@]/.test(v) ? "'" + v : v; }
 
-function doGet() { return out({ ok: true, hello: 'Aurora RSVP endpoint is live' }); }
+function doGet() { return out({ ok: true, hello: 'Aurora RSVP endpoint is live', v: 2 }); }
 function out(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
