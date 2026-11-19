@@ -120,7 +120,7 @@ export default function Rsvp({ firstName }: { firstName: string }) {
             {p1 && <>
             <label className="lbl" htmlFor="rs-name">{step === "yes" ? "Your full name" : "Your name"}</label>
             <input id="rs-name" className="field" value={name} onChange={(e) => setName(e.target.value)} maxLength={80} autoComplete="name" placeholder="Your full name" />
-            <label className="lbl" htmlFor="rs-ph">Phone / WhatsApp number{step === "no" ? " (optional)" : ""}</label>
+            <label className="lbl" htmlFor="rs-ph">Phone / WhatsApp number</label>
             <input id="rs-ph" className="field" type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value.replace(/[^\d+\-\s()]/g, "").slice(0, 20))} placeholder="+91 98765 43210" />
             {step === "yes" && (
               <>
@@ -147,7 +147,7 @@ export default function Rsvp({ firstName }: { firstName: string }) {
                 )}
               </>
             )}
-            <label className="lbl" htmlFor="rs-m">A message for the family (optional)</label>
+            <label className="lbl" htmlFor="rs-m">A message for the family</label>
             <textarea id="rs-m" className="field" rows={3} maxLength={500} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={step === "yes" ? "A blessing or note for the family" : "A kind word for Aurora"} />
             </>}
             <input className="hp" tabIndex={-1} autoComplete="off" aria-hidden value={website} onChange={(e) => setWebsite(e.target.value)} name="website" />
