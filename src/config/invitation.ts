@@ -33,6 +33,8 @@ export const invitation = {
     video: "/media/envelope.mp4", // 9:16 envelope opening; its last frame (clean reef) stays as the page background
     loop: "/media/reef-loop.mp4", // seamless 2s reef clip that loops behind the card (starts exactly where the envelope video ends)
     poster: "/media/poster.jpg",
+    // 16:9 version for desktop / landscape screens (same music)
+    desktop: { video: "/media/desktop-envelope.mp4", loop: "/media/desktop-reef-loop.mp4", poster: "/media/desktop-poster.jpg" },
     music: "/media/music.m4a",    // soundtrack from the original video; starts on tap, loops
     kicker: "Come celebrate and bless",
     tagline: ["A little celebration filled with love and joy…", "Let’s come together to shower her with", "our love and blessings!"],

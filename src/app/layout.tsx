@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Great_Vibes, Cormorant_Garamond, Nunito } from "next/font/google";
 import "./globals.css";
 import "./invite.css";
+import "./invite-wide.css";
 import { invitation } from "@/config/invitation";
 
 const script = Great_Vibes({ weight: "400", subsets: ["latin"], variable: "--font-script", display: "swap" });

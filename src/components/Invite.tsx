@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { invitation as cfg } from "@/config/invitation";
-import { ArtDefs, Bubble, Coral, Pearl, Shell, TubeCoral } from "./Art";
+import { ArtDefs, Bubble, Pearl, Shell } from "./Art";
 import Rsvp from "./Rsvp";
 
 type Stage = "cover" | "playing" | "open";
@@ -45,7 +45,21 @@ export default function Invite() {
   const [muted, setMuted] = useState(false);
   const v = useRef<HTMLVideoElement>(null), lp = useRef<HTMLVideoElement>(null), a = useRef<HTMLAudioElement>(null);
 
-  useEffect(() => { document.body.classList.toggle("locked", stage !== "open"); return () => document.body.classList.remove("locked"); }, [stage]);
+  // desktop / landscape screens get the 16:9 video and a button-driven slide to RSVP instead of scrolling
+  const [wide, setWide] = useState<boolean | null>(null);
+  const [panel, setPanel] = useState(0);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 900px) and (min-aspect-ratio: 1/1)");
+    const on = () => setWide(mq.matches);
+    on(); mq.addEventListener("change", on); return () => mq.removeEventListener("change", on);
+  }, []);
+  const media = wide ? iv.desktop : iv;
+  useEffect(() => { document.body.classList.toggle("locked", stage !== "open" || !!wide); return () => document.body.classList.remove("locked"); }, [stage, wide]);
+  useEffect(() => {
+    if (!wide) return;
+    const k = (e: KeyboardEvent) => { if (e.key === "ArrowRight") setPanel(1); if (e.key === "ArrowLeft") setPanel(0); };
+    window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k);
+  }, [wide]);
 
   function finish() { setStage("open"); window.scrollTo(0, 0); lp.current?.play().catch(() => {}); } // reef keeps moving behind the card
 
@@ -60,16 +74,18 @@ export default function Invite() {
   function toggleMusic() { const au = a.current; if (!au) return; const m = !muted; au.muted = m; setMuted(m); if (!m) au.play().catch(() => {}); }
 
   return (
-    <div className={`iv stage-${stage}`}>
+    <div className={`iv stage-${stage}${wide ? " wide" : ""} panel-${panel}`}>
       <ArtDefs />
       <div className="iv-sea" />
-      <video
-        ref={v} className={`iv-video${noVideo ? " nov" : ""}`} playsInline muted preload="auto" poster={iv.poster} aria-hidden
-        onEnded={finish} onError={() => setNoVideo(true)}
-      >
-        <source src={iv.video} type="video/mp4" />
-      </video>
-      <video ref={lp} className="iv-video iv-loop" playsInline muted loop preload="auto" src={iv.loop} aria-hidden />
+      {wide !== null && <>
+        <video
+          key={`i${wide}`} ref={v} className={`iv-video${noVideo ? " nov" : ""}`} playsInline muted preload="auto" poster={media.poster} aria-hidden
+          onEnded={finish} onError={() => setNoVideo(true)}
+        >
+          <source src={media.video} type="video/mp4" />
+        </video>
+        <video key={`l${wide}`} ref={lp} className="iv-video iv-loop" playsInline muted loop preload="auto" src={media.loop} aria-hidden />
+      </>}
       <audio ref={a} src={iv.music} loop preload="auto" />
       {stage !== "cover" && <button className="iv-sound" onClick={toggleMusic} aria-label={muted ? "Unmute music" : "Mute music"} aria-pressed={muted}>{muted ? "🔇" : "🔊"}</button>}
 
@@ -83,8 +99,14 @@ export default function Invite() {
       </div>
       {stage === "playing" && <button className="iv-skip" onClick={finish}>Skip ›</button>}
 
+      {wide && stage === "open" && cfg.rsvp.enabled && (panel === 0
+        ? <button className="iv-nav next" onClick={() => setPanel(1)} aria-label="Go to RSVP"><span>RSVP</span><b>›</b></button>
+        : <button className="iv-nav prev" onClick={() => setPanel(0)} aria-label="Back to invitation"><b>‹</b><span>Invitation</span></button>)}
+
       <main className="iv-main" aria-hidden={stage !== "open"}>
+       <div className="iv-track">
         {/* ===== INVITATION (mirrors the invitation card) ===== */}
+        <div className="iv-panel">
         <section className="iv-sec" aria-label="Invitation">
           <div className="iv-deco" aria-hidden>
             <Shell tone="pink" className="d-shell-bl" />
@@ -122,18 +144,20 @@ export default function Invite() {
             <p className="iv-close iv-in" style={{ ["--i" as string]: 6 }}>{iv.closing.map((l, i) => <span key={i}>{l}</span>)}</p>
             <Flourish />
           </article>
-          {cfg.rsvp.enabled && <div className="iv-in" style={{ ["--i" as string]: 7, position: "relative", zIndex: 5, textAlign: "center" }}><a className="iv-rsvp-link" href="#rsvp">Scroll to RSVP ↓</a></div>}
+          {cfg.rsvp.enabled && !wide && <div className="iv-in" style={{ ["--i" as string]: 7, position: "relative", zIndex: 5, textAlign: "center" }}><a className="iv-rsvp-link" href="#rsvp">Scroll to RSVP ↓</a></div>}
           <Pearl className="d-pearl-l" /><Pearl className="d-pearl-r" />
         </section>
+        </div>
 
         {/* ===== RSVP ===== */}
         {cfg.rsvp.enabled && (
+          <div className="iv-panel">
           <section id="rsvp" className="iv-rsvp" aria-label="RSVP">
-            <TubeCoral className="abs rv-deco" c="#f6c5db" c2="#e898bd" style={{ left: "-6%", bottom: "-1%", width: "38%" }} />
-            <Coral className="abs rv-deco" c="#cbb7ef" c2="#a98ad8" seed={4} style={{ right: "-5%", bottom: "-2%", width: "34%" }} />
             <div style={{ position: "relative", zIndex: 3 }}><Rsvp firstName={cfg.child.firstName} /></div>
           </section>
+          </div>
         )}
+       </div>
       </main>
     </div>
   );

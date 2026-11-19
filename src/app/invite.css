@@ -95,3 +95,42 @@ body:has(.iv) { background: #0f2c4f; }
 .iv-shells { gap: calc(var(--u) * 2.8); }
 .d-shell-bl { left: calc(var(--u) * 9); width: calc(var(--u) * 24); } .d-shell-br { right: calc(var(--u) * 8); width: calc(var(--u) * 22); }
 .iv-sec { padding-bottom: calc(var(--u) * 12); }
+
+/* ===== polish: crisper text + glossy, shimmering card ===== */
+.iv { --p: #46267f; }
+.iv-card { background: radial-gradient(120% 90% at 50% 30%, rgba(255,255,255,.97), rgba(254,246,253,.92) 65%, rgba(250,238,252,.86)); overflow: hidden;
+  border: calc(var(--u) * .35) solid rgba(255,255,255,.98);
+  box-shadow: 0 calc(var(--u)*3) calc(var(--u)*9) rgba(80,60,170,.28), 0 0 calc(var(--u)*8) rgba(255,236,250,.8), inset 0 0 calc(var(--u)*6) rgba(255,255,255,.95), inset 0 0 0 calc(var(--u)*.9) rgba(233,196,106,.28); }
+.iv-card::before { content: ""; position: absolute; inset: calc(var(--u) * 1.6); border-radius: inherit; border: 1px solid rgba(214,172,92,.55); pointer-events: none; }
+.iv-card::after { content: ""; position: absolute; top: 0; bottom: 0; width: 38%; left: -60%; pointer-events: none; background: linear-gradient(105deg, transparent, rgba(255,255,255,.75), transparent); transform: skewX(-18deg); animation: ivshine 7s ease-in-out 2.5s infinite; }
+@keyframes ivshine { 0% { left: -60%; } 30%, 100% { left: 130%; } }
+.iv-card p, .iv-card h2, .iv-card .iv-kicker { text-shadow: 0 1px 0 #fff, 0 0 calc(var(--u)*2) rgba(255,255,255,.9); }
+.iv-kicker, .iv-tag, .iv-dress, .iv-close { font-weight: 600; }
+.iv-colors { font-weight: 600; color: #5a3a96; }
+.iv-date p small, .iv-where p small { font-weight: 600; }
+.iv-date p span, .iv-where p span, .iv-time p { font-weight: 600 !important; }
+.iv-name { background: linear-gradient(100deg, #6a32b8 0%, #a266d8 35%, #d79ae6 50%, #a266d8 65%, #6a32b8 100%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; animation: ivname 6s ease-in-out infinite alternate; filter: drop-shadow(0 calc(var(--u)*.5) calc(var(--u)*.8) rgba(120,70,190,.3)); }
+@keyframes ivname { from { background-position: 0% 0; } to { background-position: 100% 0; } }
+.iv-vr { background: linear-gradient(180deg, transparent, #c9a24d, transparent); width: 2px; }
+.iv-hr i { background: linear-gradient(90deg, transparent, rgba(201,162,77,.8)); }
+.iv-sw { transition: transform .3s; } .iv-sw:hover { transform: translateY(-4px) scale(1.12); }
+.iv-sec .iv-crest { animation: ivfloat 5s ease-in-out infinite alternate; } @keyframes ivfloat { from { transform: translateX(-50%) translateY(0); } to { transform: translateX(-50%) translateY(calc(var(--u) * -1)); } }
+.iv-deco::before, .iv-deco::after { content: "✦"; position: absolute; color: #fff; text-shadow: 0 0 calc(var(--u)*2) #ffd9f0, 0 0 calc(var(--u)*4) #bfe5f3; font-size: calc(var(--u) * 4); animation: ivtw 3s ease-in-out infinite alternate; }
+.iv-deco::before { left: calc(var(--u) * 6); top: calc(var(--u) * 30); } .iv-deco::after { right: calc(var(--u) * 7); top: calc(var(--u) * 78); animation-delay: -1.5s; }
+@keyframes ivtw { from { opacity: .25; transform: scale(.7) rotate(0); } to { opacity: 1; transform: scale(1.15) rotate(20deg); } }
+.iv-rsvp .rsvp-card { box-shadow: 0 34px 70px rgba(70,40,130,.35), 0 0 30px rgba(255,236,250,.7), inset 0 0 0 7px rgba(255,255,255,.9), inset 0 0 0 8px rgba(214,172,92,.4); }
+
+/* ===== v3: no shine; fix clipped "A"; calm pastel accents ===== */
+.iv-card::after { display: none; }
+.iv-deco::before, .iv-deco::after { display: none; }
+.iv-sec .iv-crest { animation: none; }
+.iv-name { animation: none; background-size: 100% 100%; background: linear-gradient(100deg, #6a32b8, #9a5fd2 55%, #b46fc9); -webkit-background-clip: text; background-clip: text; color: transparent;
+  /* room above/below so tall script flourishes are never cut by the text-clip box */
+  padding: .38em .18em .22em; margin: calc(var(--u) * -4.2) 0 calc(var(--u) * -3.4) !important; filter: drop-shadow(0 calc(var(--u)*.4) calc(var(--u)*.7) rgba(120,70,190,.25)); }
+.iv-card { background: linear-gradient(180deg, rgba(251,245,255,.96) 0%, rgba(255,255,255,.95) 40%, rgba(255,243,249,.94) 100%); }
+.iv-kicker { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 2); }
+.iv-kicker::before, .iv-kicker::after { content: ""; width: calc(var(--u) * 7); height: 1.5px; background: linear-gradient(90deg, transparent, #c9a24d); }
+.iv-kicker::after { transform: scaleX(-1); }
+.iv-dress { position: relative; }
+.iv-colors { color: #4f2f8c; }
+.iv-close span:last-child { color: #7a3f9e; }

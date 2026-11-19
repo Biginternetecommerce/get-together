@@ -1,0 +1,54 @@
+/* Desktop / landscape: 16:9 video full-bleed, no page scroll, RSVP slides in from the right via a button. */
+.iv-panel { display: contents; }
+.iv-track { display: block; }
+
+.iv.wide { --w: 100vw; --u: calc(100svh / 168); }
+.iv.wide .iv-sea, .iv.wide .iv-video, .iv.wide .iv-cover { width: 100vw; }
+.iv.wide .iv-main { position: fixed; inset: 0; width: 100vw; height: 100svh; overflow: hidden; margin: 0; }
+.iv.wide .iv-track { display: flex; width: 200vw; height: 100svh; transition: transform .9s cubic-bezier(.65,0,.25,1); }
+.iv.wide.panel-1 .iv-track { transform: translateX(-100vw); }
+.iv.wide .iv-panel { display: flex; flex: none; width: 100vw; height: 100svh; align-items: center; justify-content: center; position: relative; }
+.iv.wide .iv-sec { width: calc(var(--u) * 100); height: 100svh; min-height: 0; padding: calc(var(--u) * 20) 0 0; margin: 0; overflow: visible; }
+.iv.wide .iv-card { width: calc(var(--u) * 94); margin: 0 auto; }
+.iv.wide .iv-rsvp { width: 100vw; height: 100svh; min-height: 0; padding: 0 4vw; overflow-y: auto; display: flex; align-items: center; justify-content: center; background: linear-gradient(90deg, rgba(246,197,219,.15), rgba(203,183,239,.4)); }
+.iv.wide .iv-rsvp > div { width: min(640px, 100%); margin: 40px 0; padding-top: 60px; }
+.iv.wide .iv-rsvp .rsvp-card { width: 100%; }
+.iv.wide .iv-sound { right: 22px; top: 18px; }
+.iv.wide .iv-skip { right: 24px; }
+.iv.wide .iv-cover { padding-bottom: 12svh; }
+
+/* swipe button */
+.iv-nav { position: fixed; z-index: 40; top: 50%; display: flex; align-items: center; gap: 10px; padding: 14px 20px; border-radius: 999px; color: #5d3a9b; font: 700 1rem var(--sans); letter-spacing: .1em; text-transform: uppercase; background: rgba(255,255,255,.82); backdrop-filter: blur(8px); box-shadow: 0 10px 28px rgba(70,60,150,.3), 0 0 0 2px rgba(255,255,255,.8); transition: transform .3s; }
+.iv-nav b { font: 400 2rem/1 var(--display); transform: translateY(-2px); }
+.iv-nav.next { right: 22px; transform: translateY(-50%); animation: navnudge 1.8s ease-in-out infinite; }
+.iv-nav.prev { left: 22px; transform: translateY(-50%); }
+.iv-nav:hover { background: #fff; }
+@keyframes navnudge { 0%,100% { translate: 0 0; } 50% { translate: 8px 0; } }
+
+/* wider card on desktop so it sits naturally on the 16:9 scene */
+.iv.wide .iv-sec { width: calc(var(--u) * 168); }
+.iv.wide .iv-card { width: calc(var(--u) * 158); padding-left: calc(var(--u) * 12); padding-right: calc(var(--u) * 12); border-radius: calc(var(--u) * 40) calc(var(--u) * 40) calc(var(--u) * 14) calc(var(--u) * 14) / calc(var(--u) * 30) calc(var(--u) * 30) calc(var(--u) * 14) calc(var(--u) * 14); }
+.iv.wide .iv-flourish { width: calc(var(--u) * 60); }
+.iv.wide .iv-when { gap: calc(var(--u) * 8); }
+.iv.wide .iv-shells { gap: calc(var(--u) * 4.5); }
+.iv.wide .iv-sw { width: calc(var(--u) * 9); }
+.iv.wide .d-shell-bl { left: calc(var(--u) * 30); } .iv.wide .d-shell-br { right: calc(var(--u) * 30); }
+.iv.wide .d-pearl-l { left: calc(var(--u) * 58); } .iv.wide .d-pearl-r { right: calc(var(--u) * 54); }
+.iv-rsvp { scrollbar-width: none; } .iv-rsvp::-webkit-scrollbar { display: none; }
+
+/* desktop: larger, more legible type (unit shrinks slightly so the taller text still fits one screen) */
+.iv.wide { --u: calc(100svh / 176); }
+.iv.wide .iv-kicker { font-size: calc(var(--u) * 5.6); }
+.iv.wide .iv-name { font-size: calc(var(--u) * 24); }
+.iv.wide .iv-tag { font-size: calc(var(--u) * 4.5); margin-top: calc(var(--u) * 3.5) !important; }
+.iv.wide .iv-date p span, .iv.wide .iv-where p span { font-size: calc(var(--u) * 4.6); }
+.iv.wide .iv-date p small, .iv.wide .iv-where p small { font-size: calc(var(--u) * 3.9); }
+.iv.wide .iv-time p { font-size: calc(var(--u) * 5.2) !important; }
+.iv.wide .iv-when svg, .iv.wide .iv-where svg { width: calc(var(--u) * 8.5); height: calc(var(--u) * 8.5); }
+.iv.wide .iv-dress { font-size: calc(var(--u) * 5.2); }
+.iv.wide .iv-colors { font-size: calc(var(--u) * 3.5); }
+.iv.wide .iv-close { font-size: calc(var(--u) * 4.5); margin-top: calc(var(--u) * 4) !important; }
+.iv.wide .iv-sw { width: calc(var(--u) * 10); }
+.iv.wide .iv-card { padding-top: calc(var(--u) * 6); padding-bottom: calc(var(--u) * 5); }
+.iv.wide .iv-when { margin-top: calc(var(--u) * 4.5); } .iv.wide .iv-where { margin-top: calc(var(--u) * 3.5); } .iv.wide .iv-hr { margin-top: calc(var(--u) * 3.5); }
+.iv.wide .iv-shells { margin-top: calc(var(--u) * 2.4); }
