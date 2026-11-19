@@ -21,12 +21,14 @@ export const invitation = {
     // ISO local start e.g. "2026-09-06T15:00:00" - leave null until confirmed (enables Add to Calendar)
     startIso: "2026-12-29T11:30:00" as string | null,
     durationHours: 3,
-    dateText: "Saturday, 29 December 2026",
+    dateText: "Tuesday, 29 December 2026",
     timeText: "11:30 AM",
     venue: "The North Avenue",
     address: "Mysore",
     // Used for Get Directions. Leave "" until confirmed.
     mapsQuery: "The North Avenue, Mysore",
+    // Exact Google Maps place link (used by every Directions / Open in Maps button)
+    mapsUrl: "https://maps.google.com/maps/place//data=!4m2!3m1!1s0x3baf7bb54f528d11:0xb04bbcef819ef9bb?entry=s&sa=X&ved=2ahUKEwjystq-tpSYAxUVluEIHdmBCmAQ4kB6BAgVEAA&hl=en",
   },
   /** Mobile invitation page (src/components/Invite.tsx) - text exactly as on the invitation card. */
   invite: {
@@ -36,16 +38,22 @@ export const invitation = {
     // 16:9 version for desktop / landscape screens (same music)
     desktop: { video: "/media/desktop-envelope.mp4", loop: "/media/desktop-reef-loop.mp4", poster: "/media/desktop-poster.jpg" },
     music: "/media/music.m4a",    // soundtrack from the original video; starts on tap, loops
-    kicker: "Come celebrate and bless",
-    tagline: ["A little celebration filled with love and joy…", "Let’s come together to shower her with", "our love and blessings!"],
-    dateLine1: "Saturday,",
+    kicker: "A LITTLE PEARL OF JOY",
+    celebrating: "Celebrating",
+    subtitle: "Our little ocean of happiness",
+    headline: "A little celebration, a lifetime of blessings...",
+    body: "With hearts full of love, we invite you to join us as we celebrate our precious Aurora and shower her with your love, prayers and blessings.",
+    dateLine1: "Tuesday,",
     dateLine2: "29 December 2026",
     time: "11:30 AM",
-    venueLine1: "The North Avenue",
+    venueLine1: "The North Avenue,",
     venueLine2: "Mysore",
-    dressTitle: "Come Dressed in a Splash of Ocean",
-    dressColors: "Pastel Pink · Blue · Green · Yellow · Lavender · White",
-    closing: ["Your presence will make", "Aurora’s celebration even more special!"],
+    dressTitle: "Dress in a Splash of Ocean Pastels",
+    dressColors: "Blush Pink · Ocean Blue · Mint Green · Butter Yellow · Lavender · Pearl White",
+    wish: "A little wish, a little prayer, a lifetime of love.",
+    wait: "We cannot wait to celebrate this precious day with you!",
+    withLove: "With love,",
+    signoff: "Sharon & John",
   },
   dressCode: {
     enabled: true, // set false to hide the whole scene
@@ -66,7 +74,11 @@ export const invitation = {
     // Editable family message - replace with the family's own words.
     familyMessage: "Our little pearl has made our world so much brighter. We would be so happy to celebrate her with the people we love most - come share a day of laughter, cake and ocean magic with us!",
   },
-  rsvp: { enabled: true, deadlineText: "" },
+  contacts: [
+    { name: "John", phone: "8971388990" },
+    { name: "Sharon", phone: "9449322702" },
+  ],
+  rsvp: { enabled: true, deadlineText: "Please RSVP by 20th December 2026" },
   guestbook: { enabled: true },
   // After the event: set to a gallery URL to show a link in the thank-you scene.
   memoriesUrl: "" as string,

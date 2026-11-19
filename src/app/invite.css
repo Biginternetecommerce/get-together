@@ -183,3 +183,82 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .iv-cover { grid-auto-flow: row; align-content: end; justify-items: center; gap: 14px; }
 .iv-open-line { margin: 0; padding: 0 24px; text-align: center; font: italic 600 1.15rem/1.3 var(--display); color: #fff; text-shadow: 0 2px 14px rgba(10,20,60,.65); max-width: 26em; }
 .rs-after { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 4px 0 16px; } .rs-after .cta { min-height: 46px; padding: 0 20px; font-size: .92rem; }
+
+/* ===== note above message + location/contact section ===== */
+.rs-note { margin: 12px 4px 0; text-align: left; font: italic 600 .98rem/1.4 var(--display); color: #5a3a96; }
+.iv-loc { position: relative; overflow: clip; padding: calc(var(--u) * 24) calc(var(--u) * 4) calc(var(--u) * 22); min-height: 100svh; display: flex; align-items: center; }
+.iv-loc-card { position: relative; width: 100%; max-width: 560px; margin: 0 auto; padding: 78px clamp(18px, 5vw, 34px) 34px; text-align: center; border-radius: 56px 56px 40px 40px;
+  background: linear-gradient(155deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.62) 45%, rgba(255,242,251,.7) 100%); -webkit-backdrop-filter: blur(16px) saturate(1.35); backdrop-filter: blur(16px) saturate(1.35);
+  border: 1.5px solid rgba(255,255,255,.75); box-shadow: 0 30px 70px rgba(40,60,140,.28), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 28px rgba(255,255,255,.35); }
+.iv-loc-crest { position: absolute; top: -58px; left: 50%; width: 120px; margin-left: -60px; filter: drop-shadow(0 10px 14px rgba(90,40,140,.3)); }
+.iv-loc-card .h-display { margin: .1em auto .4em; }
+.iv-loc-card .eyebrow, .iv-loc-card .h-display { text-shadow: 0 0 14px rgba(255,255,255,.95); }
+.iv-loc-block { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 6px 0 18px; text-align: left; }
+.iv-loc-block svg { width: 34px; height: 34px; flex: none; }
+.iv-loc-block b, .iv-contact b { display: block; font: 700 1.25rem/1.2 var(--display); color: #3b1f70; }
+.iv-loc-block span, .iv-contact span { display: block; font: 600 1rem/1.3 var(--display); color: #4f2f8c; }
+.iv-loc-hr { display: block; height: 1px; margin: 24px 10px 16px; background: linear-gradient(90deg, transparent, rgba(201,162,77,.8), transparent); }
+.iv-loc-sub { margin: 0 0 12px; font: italic 600 1.05rem var(--display); color: #4f2f8c; }
+.iv-contact { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0; padding: 10px 12px 10px 20px; text-align: left; border-radius: 999px; background: rgba(255,255,255,.7); box-shadow: 0 0 0 1.5px rgba(255,255,255,.9), 0 6px 16px rgba(80,70,160,.15); }
+.iv-contact .cta { min-height: 44px; padding: 0 24px; font-size: .95rem; }
+
+/* ===== note above message + location/contact section ===== */
+.rs-note { margin: 12px 4px 0; text-align: left; font: italic 600 .98rem/1.4 var(--display); color: #5a3a96; }
+.iv-loc { position: relative; overflow: clip; padding: calc(var(--u) * 24) calc(var(--u) * 4) calc(var(--u) * 22); min-height: 100svh; display: flex; align-items: center; }
+.iv-loc-card { position: relative; width: 100%; max-width: 560px; margin: 0 auto; padding: 78px clamp(18px, 5vw, 34px) 34px; text-align: center; border-radius: 56px 56px 40px 40px;
+  background: linear-gradient(155deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.62) 45%, rgba(255,242,251,.7) 100%); -webkit-backdrop-filter: blur(16px) saturate(1.35); backdrop-filter: blur(16px) saturate(1.35);
+  border: 1.5px solid rgba(255,255,255,.75); box-shadow: 0 30px 70px rgba(40,60,140,.28), inset 0 1.5px 0 rgba(255,255,255,.95), inset 0 0 28px rgba(255,255,255,.35); }
+.iv-loc-crest { position: absolute; top: -58px; left: 50%; width: 120px; margin-left: -60px; filter: drop-shadow(0 10px 14px rgba(90,40,140,.3)); }
+.iv-loc-card .h-display { margin: .1em auto .4em; }
+.iv-loc-card .eyebrow, .iv-loc-card .h-display { text-shadow: 0 0 14px rgba(255,255,255,.95); }
+.iv-loc-block { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 6px 0 18px; text-align: left; }
+.iv-loc-block svg { width: 34px; height: 34px; flex: none; }
+.iv-loc-block b, .iv-contact b { display: block; font: 700 1.25rem/1.2 var(--display); color: #3b1f70; }
+.iv-loc-block span, .iv-contact span { display: block; font: 600 1rem/1.3 var(--display); color: #4f2f8c; }
+.iv-loc-hr { display: block; height: 1px; margin: 24px 10px 16px; background: linear-gradient(90deg, transparent, rgba(201,162,77,.8), transparent); }
+.iv-loc-sub { margin: 0 0 12px; font: italic 600 1.05rem var(--display); color: #4f2f8c; }
+.iv-contact { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0; padding: 10px 12px 10px 20px; text-align: left; border-radius: 999px; background: rgba(255,255,255,.7); box-shadow: 0 0 0 1.5px rgba(255,255,255,.9), 0 6px 16px rgba(80,70,160,.15); }
+.iv-contact .cta { min-height: 44px; padding: 0 24px; font-size: .95rem; }
+
+/* ===== v6: new wording / structure (matches the reference invitation) ===== */
+.iv-kicker { font: 600 max(calc(var(--u) * 3.5), 11.5px)/1.2 var(--display); text-transform: uppercase; letter-spacing: .14em; white-space: nowrap; }
+.iv-kicker::before, .iv-kicker::after { width: calc(var(--u) * 5); }
+.iv-celebrating { font: 400 calc(var(--u) * 9)/1.1 var(--font-script), cursive; color: #7b45c4; margin-top: calc(var(--u) * 1.5) !important; padding: .15em .1em 0; }
+.iv-name { margin-top: calc(var(--u) * -3.4) !important; }
+.iv-sub { margin-top: calc(var(--u) * 1) !important; font: 400 calc(var(--u) * 6.2)/1.15 var(--font-script), cursive; color: #6a3fae; }
+.iv-head { margin-top: calc(var(--u) * 3.6) !important; font: italic 700 max(calc(var(--u) * 3.9), 13.5px)/1.25 var(--display); text-wrap: balance; }
+.iv-body { margin-top: calc(var(--u) * 1.4) !important; font: 500 max(calc(var(--u) * 3.2), 12.5px)/1.4 var(--display); text-wrap: balance; }
+.iv-dress { font: 400 max(calc(var(--u) * 6), 19px)/1.15 var(--font-script), cursive !important; margin-top: calc(var(--u) * 2) !important; }
+.iv-colors { font-style: normal; font-weight: 600; }
+.iv-shells { gap: 0; align-items: center; }
+.iv-shellwrap { display: inline-flex; align-items: center; }
+.iv-pearl { width: calc(var(--u) * 1.7); height: calc(var(--u) * 1.7); border-radius: 50%; margin: 0 calc(var(--u) * -.2); background: radial-gradient(circle at 32% 28%, #fff, #efe6f7 60%, #cdb8e6); box-shadow: 0 1px 2px rgba(80,50,140,.35); position: relative; z-index: 1; }
+.iv-sw { width: calc(var(--u) * 10); margin: 0 calc(var(--u) * .6); }
+.iv-wish { margin-top: calc(var(--u) * 4.2) !important; font: italic 700 max(calc(var(--u) * 3.8), 13px)/1.3 var(--display); text-wrap: balance; }
+.iv-wait { margin-top: calc(var(--u) * .8) !important; font: 500 max(calc(var(--u) * 3.1), 12px)/1.35 var(--display); text-wrap: balance; }
+.iv-with { margin-top: calc(var(--u) * 1) !important; display: grid; justify-items: center; }
+.iv-with span { font: 600 max(calc(var(--u) * 3.3), 12.5px) var(--display); }
+.iv-with b { font: 400 calc(var(--u) * 6.4)/1.1 var(--font-script), cursive; color: #6a32b8; }
+
+/* prominent RSVP button */
+.iv-rsvp-wrap { position: relative; z-index: 5; text-align: center; margin-top: calc(var(--u) * 6); }
+.iv-rsvp-big { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; width: min(82%, 320px); padding: 16px 20px 14px; border-radius: 999px; text-decoration: none; color: #fff;
+  background: linear-gradient(135deg, #9a6fe0 0%, #6a3fae 100%); border: 2px solid rgba(255,255,255,.85); box-shadow: 0 12px 30px rgba(90,50,170,.45), 0 0 0 5px rgba(255,255,255,.35); animation: ivpulse 2.2s ease-in-out infinite; }
+.iv-rsvp-big span { font: 800 2.1rem/1 var(--display); letter-spacing: .18em; text-indent: .18em; text-shadow: 0 2px 8px rgba(40,10,90,.4); }
+.iv-rsvp-big small { font: 700 .78rem var(--sans); letter-spacing: .1em; opacity: .92; }
+@keyframes ivpulse { 0%, 100% { transform: scale(1); box-shadow: 0 12px 30px rgba(90,50,170,.45), 0 0 0 5px rgba(255,255,255,.35); } 50% { transform: scale(1.04); box-shadow: 0 16px 38px rgba(90,50,170,.55), 0 0 0 10px rgba(255,255,255,.18); } }
+.iv-nav.next.big { padding: 22px 30px; gap: 14px; font-size: 1.4rem; color: #fff; background: linear-gradient(135deg, #9a6fe0, #6a3fae); box-shadow: 0 14px 34px rgba(90,50,170,.5), 0 0 0 5px rgba(255,255,255,.4); }
+.iv-nav.next.big b { font-size: 2.6rem; }
+
+/* RSVP deadline note */
+.rs-deadline { display: inline-block; margin: 2px auto 14px; padding: .4em 1.1em; border-radius: 999px; font: 700 .95rem var(--display); color: #6a2f96; background: rgba(255,255,255,.75); box-shadow: 0 0 0 1.5px rgba(201,162,77,.7); }
+.rs-choices, .rsvp-body form { text-align: center; } .rsvp-body form .lbl, .rsvp-body form .rs-note { text-align: left; }
+
+/* ===== RSVP story copy ===== */
+.rs-story { margin: 4px auto 10px; max-width: 30em; font: italic 600 1.08rem/1.4 var(--display); color: #4f2f8c; text-shadow: 0 0 12px rgba(255,255,255,.95); }
+.rs-story.soft { font-style: normal; font-weight: 500; font-size: 1rem; }
+.rs-ask { margin: 12px auto 2px; font: 700 1.3rem/1.25 var(--display); color: #3b1f70; text-wrap: balance; text-shadow: 0 0 12px rgba(255,255,255,.95); }
+.done-h { margin: 6px auto 8px !important; }
+.done-line { max-width: 30em; margin-left: auto !important; margin-right: auto !important; }
+.rs-saved { margin: 4px 0 10px; font-size: .95rem; }
+.rs-with { margin: 12px 0 14px; font: 600 1.1rem var(--display); color: #4f2f8c; } .rs-with b { font: 400 1.9rem/1 var(--font-script), cursive; color: #6a32b8; }

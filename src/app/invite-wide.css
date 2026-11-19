@@ -73,3 +73,39 @@
 .iv.wide .iv-dress { font-size: max(calc(var(--u) * 5.2), 12px); }
 .iv.wide .iv-close { font-size: max(calc(var(--u) * 4.5), 11px); }
 .iv.wide .iv-kicker { font-size: max(calc(var(--u) * 5.6), 12px); }
+
+/* three slides on desktop: invitation -> RSVP -> location */
+.iv.wide .iv-track { width: 300vw; }
+.iv.wide.panel-2 .iv-track { transform: translateX(-200vw); }
+.iv.wide .iv-loc { width: 100vw; height: 100svh; min-height: 0; padding: 0 4vw; overflow-y: auto; justify-content: center; scrollbar-width: none; background: linear-gradient(90deg, rgba(203,183,239,.4), rgba(246,197,219,.2)); }
+.iv.wide .iv-loc::-webkit-scrollbar { display: none; }
+.iv.wide .iv-loc-card { margin: 70px auto 40px; }
+.iv.wide .iv-loc-card { align-self: center; }
+
+/* three slides on desktop: invitation -> RSVP -> location */
+.iv.wide .iv-track { width: 300vw; }
+.iv.wide.panel-2 .iv-track { transform: translateX(-200vw); }
+.iv.wide .iv-loc { width: 100vw; height: 100svh; min-height: 0; padding: 0 4vw; overflow-y: auto; justify-content: center; scrollbar-width: none; background: linear-gradient(90deg, rgba(203,183,239,.4), rgba(246,197,219,.2)); }
+.iv.wide .iv-loc::-webkit-scrollbar { display: none; }
+.iv.wide .iv-loc-card { margin: 70px auto 40px; }
+
+/* v6 desktop: wider card, fit longer copy on one screen */
+.iv.wide { --u: calc(100svh / 196); }
+.iv.wide .iv-sec { width: calc(var(--u) * 232); padding-top: calc(var(--u) * 17); }
+.iv.wide .iv-card { width: calc(var(--u) * 222); padding-top: calc(var(--u) * 5); padding-bottom: calc(var(--u) * 4); }
+.iv.wide .iv-kicker { font-size: max(calc(var(--u) * 3.6), 12px); }
+.iv.wide .iv-celebrating { font-size: calc(var(--u) * 8.5); } .iv.wide .iv-name { font-size: calc(var(--u) * 19); }
+.iv.wide .iv-sub { font-size: calc(var(--u) * 6); }
+.iv.wide .iv-head { font-size: max(calc(var(--u) * 4.2), 13px); } .iv.wide .iv-body { font-size: max(calc(var(--u) * 3.4), 12px); margin-left: auto; margin-right: auto; max-width: 78%; }
+.iv.wide .iv-dress { font-size: max(calc(var(--u) * 6), 16px) !important; }
+.iv.wide .iv-wish { font-size: max(calc(var(--u) * 4), 13px); } .iv.wide .iv-wait { font-size: max(calc(var(--u) * 3.3), 12px); }
+.iv.wide .iv-with b { font-size: calc(var(--u) * 6); }
+.iv.wide .iv-when { margin-top: calc(var(--u) * 3.5); } .iv.wide .iv-where { margin-top: calc(var(--u) * 2.5); } .iv.wide .iv-hr { margin-top: calc(var(--u) * 2.5); }
+.iv.wide .iv-sw { width: calc(var(--u) * 9); }
+.iv.wide .d-shell-bl { left: calc(var(--u) * 60); } .iv.wide .d-shell-br { right: calc(var(--u) * 60); }
+
+/* v6.1: keep the crest clear of the kicker line */
+.iv.wide { --u: calc(100svh / 204); }
+.iv.wide .iv-sec { padding-top: calc(var(--u) * 22); }
+.iv.wide .iv-crest { width: calc(var(--u) * 24); top: 0; }
+.iv.wide .iv-card { padding-top: calc(var(--u) * 4.5); }

@@ -57,7 +57,7 @@ export default function Invite() {
   useEffect(() => { document.body.classList.toggle("locked", stage !== "open" || !!wide); return () => document.body.classList.remove("locked"); }, [stage, wide]);
   useEffect(() => {
     if (!wide) return;
-    const k = (e: KeyboardEvent) => { if (e.key === "ArrowRight") setPanel(1); if (e.key === "ArrowLeft") setPanel(0); };
+    const k = (e: KeyboardEvent) => { if (e.key === "ArrowRight") setPanel((p) => Math.min(2, p + 1)); if (e.key === "ArrowLeft") setPanel((p) => Math.max(0, p - 1)); };
     window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k);
   }, [wide]);
 
@@ -100,9 +100,10 @@ export default function Invite() {
       </div>
       {stage === "playing" && <button className="iv-skip" onClick={finish}>Skip ›</button>}
 
-      {wide && stage === "open" && cfg.rsvp.enabled && (panel === 0
-        ? <button className="iv-nav next" onClick={() => setPanel(1)} aria-label="Go to RSVP"><span>RSVP</span><b>›</b></button>
-        : <button className="iv-nav prev" onClick={() => setPanel(0)} aria-label="Back to invitation"><b>‹</b><span>Invitation</span></button>)}
+      {wide && stage === "open" && <>
+        {panel > 0 && <button className="iv-nav prev" onClick={() => setPanel(panel - 1)} aria-label="Previous"><b>‹</b><span>{panel === 1 ? "Invitation" : "RSVP"}</span></button>}
+        {panel < 2 && <button className={`iv-nav next${panel === 0 ? " big" : ""}`} onClick={() => setPanel(panel + 1)} aria-label="Next"><span>{panel === 0 ? "RSVP" : "Location"}</span><b>›</b></button>}
+      </>}
 
       <main className="iv-main" aria-hidden={stage !== "open"}>
        <div className="iv-track">
@@ -119,33 +120,38 @@ export default function Invite() {
 
           <article className="iv-card">
             <p className="iv-kicker iv-in" style={{ ["--i" as string]: 0 }}>{iv.kicker}</p>
+            <p className="iv-celebrating iv-in" style={{ ["--i" as string]: 1 }}>{iv.celebrating}</p>
             <h1 className="iv-name iv-in" style={{ ["--i" as string]: 1 }}>{cfg.child.firstName}</h1>
             <Flourish />
+            <p className="iv-sub iv-in" style={{ ["--i" as string]: 2 }}>{iv.subtitle}</p>
 
-            <p className="iv-tag iv-in" style={{ ["--i" as string]: 2 }}>{iv.tagline.map((l, i) => <span key={i}>{l}</span>)}</p>
+            <h2 className="iv-head iv-in" style={{ ["--i" as string]: 2 }}>{iv.headline}</h2>
+            <p className="iv-body iv-in" style={{ ["--i" as string]: 3 }}>{iv.body}</p>
 
-            <div className="iv-when iv-in" style={{ ["--i" as string]: 3 }}>
+            <div className="iv-when iv-in" style={{ ["--i" as string]: 4 }}>
               <div className="iv-date"><Ico d={ICON.cal} /><p><span>{iv.dateLine1}</span><small>{iv.dateLine2}</small></p></div>
               <i className="iv-vr" />
               <div className="iv-time"><Ico d={ICON.clock} /><p>{iv.time}</p></div>
             </div>
 
-            <div className="iv-where iv-in" style={{ ["--i" as string]: 4 }}>
+            <div className="iv-where iv-in" style={{ ["--i" as string]: 5 }}>
               <Ico d={ICON.pin} /><p><span>{iv.venueLine1}</span><small>{iv.venueLine2}</small></p>
             </div>
 
             <div className="iv-hr"><i /><Shell tone="pink" /><i /></div>
 
-            <h2 className="iv-dress iv-in" style={{ ["--i" as string]: 5 }}>{iv.dressTitle}</h2>
+            <h2 className="iv-dress iv-in" style={{ ["--i" as string]: 6 }}>{iv.dressTitle}</h2>
             <p className="iv-colors">{iv.dressColors}</p>
             <div className="iv-shells" role="list" aria-label="Dress colours">
-              {SHELLS.map((s) => <Shell key={s.name} fill={s.fill} className="iv-sw" />)}
+              {SHELLS.map((s, i) => <span key={s.name} className="iv-shellwrap">{i > 0 && <i className="iv-pearl" />}<Shell fill={s.fill} className="iv-sw" /></span>)}
             </div>
 
-            <p className="iv-close iv-in" style={{ ["--i" as string]: 6 }}>{iv.closing.map((l, i) => <span key={i}>{l}</span>)}</p>
+            <p className="iv-wish iv-in" style={{ ["--i" as string]: 7 }}>{iv.wish}</p>
+            <p className="iv-wait iv-in" style={{ ["--i" as string]: 7 }}>{iv.wait}</p>
             <Flourish />
+            <p className="iv-with iv-in" style={{ ["--i" as string]: 8 }}><span>{iv.withLove}</span><b>{iv.signoff}</b></p>
           </article>
-          {cfg.rsvp.enabled && !wide && <div className="iv-in" style={{ ["--i" as string]: 7, position: "relative", zIndex: 5, textAlign: "center" }}><a className="iv-rsvp-link" href="#rsvp">Scroll to RSVP ↓</a></div>}
+          {cfg.rsvp.enabled && !wide && <div className="iv-in iv-rsvp-wrap" style={{ ["--i" as string]: 9 }}><a className="iv-rsvp-big" href="#rsvp" onClick={(e) => { e.preventDefault(); document.querySelector("#rsvp")?.scrollIntoView({ behavior: "smooth", block: "center" }); }}><span>RSVP</span><small>Tap to reply ↓</small></a></div>}
           <Pearl className="d-pearl-l" /><Pearl className="d-pearl-r" />
         </section>
         </div>
@@ -158,6 +164,30 @@ export default function Invite() {
           </section>
           </div>
         )}
+
+        {/* ===== LOCATION + CONTACT ===== */}
+        <div className="iv-panel">
+        <section id="location" className="iv-loc" aria-label="Location and contact">
+          <div className="iv-loc-card">
+            <Shell tone="blue" pearl className="iv-loc-crest" />
+            <p className="eyebrow dark">Find us</p>
+            <h2 className="h-display sm">Location &amp; Contact</h2>
+            <div className="iv-loc-block">
+              <Ico d={ICON.pin} />
+              <div><b>{iv.venueLine1}</b><span>{iv.venueLine2}</span></div>
+            </div>
+            <a className="cta" href={cfg.event.mapsUrl} target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
+            <i className="iv-loc-hr" />
+            <p className="iv-loc-sub">For any assistance, please call</p>
+            {cfg.contacts.map((c) => (
+              <div className="iv-contact" key={c.name}>
+                <div><b>{c.name}</b><span>+91 {c.phone.slice(0, 5)} {c.phone.slice(5)}</span></div>
+                <a className="cta ghost" href={`tel:+91${c.phone}`} aria-label={`Call ${c.name}`}>Call</a>
+              </div>
+            ))}
+          </div>
+        </section>
+        </div>
        </div>
       </main>
     </div>

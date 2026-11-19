@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { addRsvp } from "@/lib/store";
+import { sendToSheet, sheetEnabled } from "@/lib/sheet";
 import { clean, ipOf, looksLikeBot, rateLimited } from "@/lib/guard";
 
 export async function POST(req: Request) {
@@ -17,7 +18,12 @@ export async function POST(req: Request) {
   if (phone && (digits.length < 7 || digits.length > 15)) return NextResponse.json({ error: "That phone number doesn't look right." }, { status: 422 });
   if (attending && digits.length < 7) return NextResponse.json({ error: "Please add a phone / WhatsApp number." }, { status: 422 });
   if (attending && (guestNames.length !== guests - 1 || guestNames.some((n) => !n))) return NextResponse.json({ error: "Please add the name of every guest." }, { status: 422 });
-  try { await addRsvp({ name, attending, guests, phone: phone || null, guest_names: guestNames, message: message || null }); }
-  catch { return NextResponse.json({ error: "Could not save - please try again." }, { status: 500 }); }
+  const rec = { name, attending, guests, phone: phone || null, guest_names: guestNames, message: message || null };
+  // The Google Sheet + email hook and the app database are saved side by side; the reply succeeds if at least one kept the RSVP.
+  const jobs: Promise<unknown>[] = [addRsvp(rec)];
+  if (sheetEnabled()) jobs.push(sendToSheet(rec));
+  const res = await Promise.allSettled(jobs);
+  res.forEach((r, i) => { if (r.status === "rejected") console.error(i === 0 ? "RSVP store failed" : "RSVP sheet/email failed", r.reason); });
+  if (res.every((r) => r.status === "rejected")) return NextResponse.json({ error: "Could not save - please try again." }, { status: 500 });
   return NextResponse.json({ ok: true });
 }

@@ -16,7 +16,7 @@ function addToCalendar() {
     `SUMMARY:${esc(ev.title)}`, `LOCATION:${esc(`${ev.venue}, ${ev.address}`)}`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
   const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([body], { type: "text/calendar" })); a.download = "aurora-celebration.ics"; a.click();
 }
-const directions = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cfg.event.mapsQuery)}`, "_blank", "noopener");
+const directions = () => window.open(cfg.event.mapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cfg.event.mapsQuery)}`, "_blank", "noopener");
 
 type Step = "choose" | "yes" | "no" | "doneYes" | "doneNo";
 
@@ -98,7 +98,9 @@ export default function Rsvp({ firstName }: { firstName: string }) {
           <div className="rs-choices">
             <p className="eyebrow dark">RSVP</p>
             <h2 className="h-display sm">Will You Join Us Under the Sea?</h2>
-            <p className="rs-sub">Please let us know for {firstName}&apos;s celebration.</p>
+            <h3 className="rs-ask">Our Little Pearl Is Waiting for You!</h3>
+            <p className="rs-story soft">Come celebrate {firstName} and make a splash of beautiful memories with us.</p>
+            {cfg.rsvp.deadlineText && <p className="rs-deadline">{cfg.rsvp.deadlineText}</p>}
             <div className="rs-row">
               <button className="rs-shell blue" onClick={(e) => choose("yes", e.currentTarget)} aria-label="Yes, I'll be there">
                 <span className="rs-art"><Lazy3D fallback={<><Shell tone="blue" glow /></>}><ShellButton3D tone="blue" /></Lazy3D></span>
@@ -115,13 +117,29 @@ export default function Rsvp({ firstName }: { firstName: string }) {
         {(step === "yes" || step === "no") && (
           <form onSubmit={(e) => submit(step === "yes", e)} noValidate>
             <Octopus mood={step === "yes" ? "cheer" : "sleep"} className="rs-oct" />
-            <h2 className="h-display sm">{step === "yes" ? "Yay! Tell us who's coming" : "We'll miss you"}</h2>
+            {step === "yes" ? (
+              <>
+                <h2 className="h-display sm">Yay! Tell us who&apos;s coming</h2>
+                <p className="rs-story">Every little pearl has a story.<br />Aurora&apos;s is filled with love. ♡</p>
+                {cfg.rsvp.deadlineText && <p className="rs-deadline">{cfg.rsvp.deadlineText}</p>}
+              </>
+            ) : (
+              <>
+                <h2 className="h-display sm">Oh, we&apos;ll miss you! ♡</h2>
+                <p className="rs-story">Every little pearl has a story. Aurora&apos;s is filled with love.</p>
+                <p className="rs-story soft">We&apos;re sorry you won&apos;t be able to join us, but your love and blessings mean just as much to our little Aurora.</p>
+                <h3 className="rs-ask">Would you like to leave Aurora a little wish?</h3>
+                <p className="rs-story soft">A little prayer, a sweet message or a blessing for her to cherish.</p>
+              </>
+            )}
             {step === "yes" && <p className="rs-steps">Step {part} of 2 · {part === 1 ? "About you" : "Your guests"}</p>}
             {p1 && <>
             <label className="lbl" htmlFor="rs-name">{step === "yes" ? "Your full name" : "Your name"}</label>
             <input id="rs-name" className="field" value={name} onChange={(e) => setName(e.target.value)} maxLength={80} autoComplete="name" placeholder="Your full name" />
+            {step === "yes" && <>
             <label className="lbl" htmlFor="rs-ph">Phone / WhatsApp number</label>
             <input id="rs-ph" className="field" type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value.replace(/[^\d+\-\s()]/g, "").slice(0, 20))} placeholder="+91 98765 43210" />
+            </>}
             {step === "yes" && (
               <>
                 <label className="lbl" htmlFor="rs-g">Number of guests (including you)</label>
@@ -147,8 +165,9 @@ export default function Rsvp({ firstName }: { firstName: string }) {
                 )}
               </>
             )}
-            <label className="lbl" htmlFor="rs-m">A message for the family</label>
-            <textarea id="rs-m" className="field" rows={3} maxLength={500} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={step === "yes" ? "A blessing or note for the family" : "A kind word for Aurora"} />
+            {step === "yes" && <p className="rs-note">A little note: If you prefer a vegetarian meal, kindly mention it in your RSVP message.</p>}
+            <label className="lbl" htmlFor="rs-m">{step === "yes" ? "A message for the family" : "Your wish for Aurora"}</label>
+            <textarea id="rs-m" className="field" rows={3} maxLength={500} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={step === "yes" ? "A blessing or note for the family" : "A little prayer, a sweet message or a blessing…"} />
             </>}
             <input className="hp" tabIndex={-1} autoComplete="off" aria-hidden value={website} onChange={(e) => setWebsite(e.target.value)} name="website" />
             {err && <p role="alert" className="form-err">{err}</p>}
@@ -162,12 +181,13 @@ export default function Rsvp({ firstName }: { firstName: string }) {
         {step === "doneYes" && (
           <div>
             <Octopus mood="cheer" className="rs-oct big" />
-            <h2 className="script done-script">Yay{first ? `, ${first}` : ""}!</h2>
-            <p className="done-line">We can&apos;t wait to celebrate with you!</p>
-            <p className="rs-sub">Your reply for {guests} {guests === 1 ? "guest" : "guests"} has been saved{guests > 1 ? `: ${[name.trim(), ...names.slice(0, guests - 1).map((n) => n.trim())].join(", ")}` : ""}.</p>
+            <h2 className="h-display sm done-h">You&apos;ve become part of Aurora&apos;s story!</h2>
+            <p className="done-line">Thank you for sharing your love and blessings with our little pearl. We can&apos;t wait to see you!</p>
+            <p className="rs-sub rs-saved">{guests} {guests === 1 ? "guest" : "guests"}{guests > 1 ? `: ${[name.trim(), ...names.slice(0, guests - 1).map((n) => n.trim())].join(", ")}` : ""}</p>
+            <p className="rs-with">With love, <b>{cfg.invite.signoff}</b> ♡</p>
             <div className="rs-after">
               {cfg.event.startIso && <button type="button" className="cta ghost" onClick={addToCalendar}>Add to Calendar</button>}
-              {cfg.event.mapsQuery && <button type="button" className="cta ghost" onClick={directions}>Get Directions</button>}
+              {(cfg.event.mapsUrl || cfg.event.mapsQuery) && <button type="button" className="cta ghost" onClick={directions}>Get Directions</button>}
             </div>
             <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>{[0, 1, 2].map((i) => <Pearl key={i} className="bob" style={{ width: 22, animationDelay: `${i * 0.4}s` }} />)}</div>
           </div>
@@ -175,8 +195,9 @@ export default function Rsvp({ firstName }: { firstName: string }) {
         {step === "doneNo" && (
           <div>
             <Octopus mood="sleep" className="rs-oct big" />
-            <h2 className="script done-script">Thank you{first ? `, ${first}` : ""}</h2>
-            <p className="done-line">We&apos;re sorry you can&apos;t make it - you&apos;ll be in our hearts that day.</p>
+            <h2 className="h-display sm done-h">Your love has reached our little pearl!</h2>
+            <p className="done-line">Thank you for taking a moment to send Aurora your wishes. Even from afar, you&apos;re part of her beautiful story.</p>
+            <p className="rs-with">With love, <b>{cfg.invite.signoff}</b> ♡</p>
           </div>
         )}
       </div>
