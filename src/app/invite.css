@@ -88,3 +88,10 @@ body:has(.iv) { background: #0f2c4f; }
 .iv-rsvp { position: relative; overflow: clip; padding: calc(var(--u) * 24) calc(var(--u) * 4) calc(var(--u) * 28); min-height: 100svh; background: linear-gradient(180deg, rgba(246,197,219,0), rgba(246,197,219,.3) 30%, rgba(203,183,239,.45)); display: flex; align-items: center; }
 .iv-rsvp > div { width: 100%; }
 .iv-rsvp .rsvp-card { width: 100%; }
+
+/* the scallop art draws slightly outside its viewBox - never clip it */
+.iv svg { overflow: visible; }
+.iv-sw { width: calc(var(--u) * 8); }
+.iv-shells { gap: calc(var(--u) * 2.8); }
+.d-shell-bl { left: calc(var(--u) * 9); width: calc(var(--u) * 24); } .d-shell-br { right: calc(var(--u) * 8); width: calc(var(--u) * 22); }
+.iv-sec { padding-bottom: calc(var(--u) * 12); }
