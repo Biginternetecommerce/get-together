@@ -19,14 +19,31 @@ export const invitation = {
   event: {
     title: "A Sea of Blessings for Aurora",
     // ISO local start e.g. "2026-09-06T15:00:00" - leave null until confirmed (enables Add to Calendar)
-    startIso: "2027-03-14T15:00:00" as string | null,
+    startIso: "2026-12-29T11:30:00" as string | null,
     durationHours: 3,
-    dateText: "Sunday, March 14, 2027",
-    timeText: "3:00 PM - 6:00 PM",
-    venue: "Coral Bay Garden Hall",
-    address: "12 Seashell Lane, Marina Bay",
+    dateText: "Saturday, 29 December 2026",
+    timeText: "11:30 AM",
+    venue: "The North Avenue",
+    address: "Mysore",
     // Used for Get Directions. Leave "" until confirmed.
-    mapsQuery: "Coral Bay Garden Hall, 12 Seashell Lane, Marina Bay",
+    mapsQuery: "The North Avenue, Mysore",
+  },
+  /** Mobile invitation page (src/components/Invite.tsx) - text exactly as on the invitation card. */
+  invite: {
+    video: "/media/envelope.mp4", // 9:16 envelope opening; its last frame (clean reef) stays as the page background
+    loop: "/media/reef-loop.mp4", // seamless 2s reef clip that loops behind the card (starts exactly where the envelope video ends)
+    poster: "/media/poster.jpg",
+    music: "/media/music.m4a",    // soundtrack from the original video; starts on tap, loops
+    kicker: "Come celebrate and bless",
+    tagline: ["A little celebration filled with love and joy…", "Let’s come together to shower her with", "our love and blessings!"],
+    dateLine1: "Saturday,",
+    dateLine2: "29 December 2026",
+    time: "11:30 AM",
+    venueLine1: "The North Avenue",
+    venueLine2: "Mysore",
+    dressTitle: "Come Dressed in a Splash of Ocean",
+    dressColors: "Pastel Pink · Blue · Green · Yellow · Lavender · White",
+    closing: ["Your presence will make", "Aurora’s celebration even more special!"],
   },
   dressCode: {
     enabled: true, // set false to hide the whole scene

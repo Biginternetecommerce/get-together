@@ -1,0 +1,90 @@
+/* =====================================================================
+   MOBILE INVITATION  (src/components/Invite.tsx)
+   Everything is sized in --u (1% of a 480px-max phone column) so the card keeps
+   the exact proportions of the invitation image at any phone width.
+   ===================================================================== */
+body:has(.iv) { background: #0f2c4f; }
+.iv { --u: min(1vw, 4.8px); --w: min(100vw, 480px); --p: #5d3a9b; position: relative; font-family: var(--display); color: var(--p); }
+.iv-sea, .iv-video, .iv-cover { position: fixed; top: 0; left: 50%; width: var(--w); height: 100svh; transform: translateX(-50%); }
+.iv-sea { z-index: 0; background: linear-gradient(180deg, #bfe9f6 0%, #cfe0fb 45%, #f7d6ea 100%); }
+.iv-video { z-index: 1; object-fit: cover; background: transparent; }
+.iv-video.nov { display: none; }
+.iv-loop { z-index: 2; opacity: 0; transition: opacity .4s; } .stage-open .iv-loop { opacity: 1; }
+.iv-main { position: relative; z-index: 5; width: var(--w); margin: 0 auto; opacity: 0; visibility: hidden; transition: opacity 1s ease .2s; }
+.stage-open .iv-main { opacity: 1; visibility: visible; }
+
+/* tap-to-open cover */
+.iv-cover { z-index: 30; display: grid; place-items: end center; padding-bottom: 13svh; background: linear-gradient(180deg, rgba(8,20,50,0) 45%, rgba(8,20,50,.55)); transition: opacity .6s; }
+.stage-cover .iv-cover { opacity: 1; } .stage-playing .iv-cover, .stage-open .iv-cover { opacity: 0; pointer-events: none; }
+.iv-open { position: relative; display: grid; justify-items: center; gap: 6px; padding: 18px 34px; border-radius: 999px; color: #fff; background: rgba(255,255,255,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1.5px solid rgba(255,255,255,.7); box-shadow: 0 10px 30px rgba(20,20,80,.35); }
+.iv-open-txt { font: 700 1.35rem var(--display); letter-spacing: .06em; text-shadow: 0 2px 10px rgba(0,0,40,.5); }
+.iv-open small { font: 600 .8rem var(--sans); opacity: .9; }
+.iv-open-ring { position: absolute; inset: -2px; border-radius: 999px; border: 2px solid rgba(255,255,255,.8); animation: ivping 2s ease-out infinite; }
+@keyframes ivping { from { transform: scale(1); opacity: .9; } to { transform: scale(1.28, 1.5); opacity: 0; } }
+.iv-skip { position: fixed; z-index: 31; bottom: 22px; right: max(16px, calc(50% - var(--w) / 2 + 16px)); padding: 9px 18px; border-radius: 999px; font: 700 .85rem var(--sans); color: #fff; background: rgba(0,0,0,.35); backdrop-filter: blur(6px); }
+
+.iv-sound { position: fixed; z-index: 31; top: 14px; right: max(14px, calc(50% - var(--w) / 2 + 14px)); width: 42px; height: 42px; border-radius: 50%; font-size: 1.1rem; background: rgba(255,255,255,.65); backdrop-filter: blur(6px); box-shadow: 0 4px 12px rgba(60,60,140,.25); }
+/* card */
+.iv-sec { position: relative; overflow: clip; padding: calc(var(--u) * 24) calc(var(--u) * 3) calc(var(--u) * 8); min-height: calc(var(--u) * 152); }
+.iv-crest { position: absolute; z-index: 4; top: calc(var(--u) * 1); left: 50%; width: calc(var(--u) * 30); transform: translateX(-50%); filter: drop-shadow(0 calc(var(--u)*1) calc(var(--u)*1.5) rgba(90,60,150,.25)); }
+.iv-crest-shell { display: block; width: 100%; margin-top: calc(var(--u) * 3.6); }
+.iv-crown { position: absolute; z-index: 2; top: 0; left: 50%; width: calc(var(--u) * 9); transform: translateX(-50%); }
+.iv-card { position: relative; z-index: 3; text-align: center; padding: calc(var(--u) * 7) calc(var(--u) * 5) calc(var(--u) * 6); border-radius: calc(var(--u) * 36) calc(var(--u) * 36) calc(var(--u) * 14) calc(var(--u) * 14) / calc(var(--u) * 30) calc(var(--u) * 30) calc(var(--u) * 14) calc(var(--u) * 14);
+  background: radial-gradient(120% 90% at 50% 40%, rgba(255,253,255,.93), rgba(253,246,252,.84) 70%, rgba(250,240,250,.7));
+  border: 1.5px solid rgba(255,255,255,.95); box-shadow: 0 calc(var(--u)*3) calc(var(--u)*8) rgba(90,70,170,.18), inset 0 0 calc(var(--u)*6) rgba(255,255,255,.9); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+.iv-card p, .iv-card h1, .iv-card h2 { margin: 0; }
+.iv-kicker { font: italic 500 calc(var(--u) * 4.6)/1.1 var(--display); }
+.iv-name { font-family: var(--font-script), cursive; font-weight: 400; font-size: calc(var(--u) * 21); line-height: 1.05 !important; margin-top: calc(var(--u) * -.5) !important;
+  background: linear-gradient(100deg, #7b45c4, #a56fd6 55%, #b98ae0); -webkit-background-clip: text; background-clip: text; color: transparent; padding: 0 .12em; }
+.iv-flourish { display: block; width: calc(var(--u) * 46); margin: calc(var(--u) * -.5) auto 0; }
+.iv-tag { margin-top: calc(var(--u) * 4) !important; font: italic 500 calc(var(--u) * 3.6)/1.25 var(--display); }
+.iv-tag span, .iv-close span { display: block; }
+.iv-when { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 3.5); margin-top: calc(var(--u) * 5.5); text-align: left; }
+.iv-when svg, .iv-where svg { width: calc(var(--u) * 7.2); height: calc(var(--u) * 7.2); flex: none; }
+.iv-date, .iv-time, .iv-where { display: flex; align-items: center; gap: calc(var(--u) * 2.6); }
+.iv-date p span, .iv-where p span { display: block; font: 500 calc(var(--u) * 3.7)/1.1 var(--display); }
+.iv-date p small, .iv-where p small { display: block; font: 500 calc(var(--u) * 3)/1.2 var(--display); }
+.iv-time p { font: 500 calc(var(--u) * 4.1)/1 var(--display) !important; letter-spacing: .02em; }
+.iv-vr { width: 1.5px; height: calc(var(--u) * 8.5); background: rgba(106,74,168,.55); }
+.iv-where { justify-content: center; margin-top: calc(var(--u) * 4.5); text-align: center; }
+.iv-where p { text-align: center; } .iv-where p small { font-size: calc(var(--u) * 3.1); }
+.iv-hr { display: flex; align-items: center; gap: calc(var(--u) * 2); margin: calc(var(--u) * 4.5) calc(var(--u) * 1) 0; }
+.iv-hr i { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(106,74,168,.6)); } .iv-hr i:last-child { transform: scaleX(-1); }
+.iv-hr svg { width: calc(var(--u) * 6); flex: none; }
+.iv-dress { margin-top: calc(var(--u) * 2.6) !important; font: italic 500 calc(var(--u) * 4.1)/1.15 var(--display); }
+.iv-colors { margin-top: calc(var(--u) * 1.2) !important; font: italic 500 calc(var(--u) * 2.7)/1.3 var(--display); }
+.iv-shells { display: flex; justify-content: center; gap: calc(var(--u) * 1.4); margin-top: calc(var(--u) * 3.2); }
+.iv-sw { width: calc(var(--u) * 9); height: auto; filter: drop-shadow(0 calc(var(--u)*.4) calc(var(--u)*.5) rgba(90,60,150,.25)); }
+.iv-close { margin-top: calc(var(--u) * 5) !important; font: italic 500 calc(var(--u) * 3.5)/1.3 var(--display); }
+.iv-card .iv-flourish:last-of-type { margin-top: calc(var(--u) * 1.5); width: calc(var(--u) * 44); }
+.iv-rsvp-link { display: inline-block; margin-top: calc(var(--u) * 3); padding: .35em 1.1em; border-radius: 999px; font: 700 .8rem var(--sans); letter-spacing: .12em; color: #7a55b8; background: rgba(255,255,255,.75); text-decoration: none; animation: bob 2.4s ease-in-out infinite alternate; }
+
+/* sea-life around the card */
+.iv-deco { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.iv-deco > svg { position: absolute; height: auto; filter: drop-shadow(0 calc(var(--u)*.8) calc(var(--u)*1) rgba(60,70,150,.2)); }
+.d-turtle { left: calc(var(--u) * 1); top: calc(var(--u) * 9); width: calc(var(--u) * 27); }
+.d-horse { right: calc(var(--u) * 3); top: calc(var(--u) * 8); width: calc(var(--u) * 15); }
+.d-jelly { left: calc(var(--u) * -1); top: calc(var(--u) * 71); width: calc(var(--u) * 19); }
+.d-star { right: calc(var(--u) * -1); top: calc(var(--u) * 104); width: calc(var(--u) * 17); }
+.d-coral-l { left: calc(var(--u) * -5); top: calc(var(--u) * 33); width: calc(var(--u) * 17); }
+.d-coral-l2 { left: calc(var(--u) * -3); top: calc(var(--u) * 52); width: calc(var(--u) * 12); }
+.d-coral-r { right: calc(var(--u) * -5); top: calc(var(--u) * 52); width: calc(var(--u) * 20); }
+.d-coral-r2 { right: calc(var(--u) * -3); top: calc(var(--u) * 36); width: calc(var(--u) * 13); }
+.d-weed-l { left: 0; bottom: 0; width: calc(var(--u) * 10); }
+.d-weed-r { right: 0; bottom: 0; width: calc(var(--u) * 9); }
+.d-shell-bl { left: calc(var(--u) * 6); bottom: calc(var(--u) * 1); width: calc(var(--u) * 26); }
+.d-shell-br { right: calc(var(--u) * 5); bottom: calc(var(--u) * 1); width: calc(var(--u) * 24); }
+.d-b1 { left: calc(var(--u) * 17); top: calc(var(--u) * 6); width: calc(var(--u) * 7); } .d-b2 { right: calc(var(--u) * 4); top: calc(var(--u) * 40); width: calc(var(--u) * 6); }
+.d-b3 { left: calc(var(--u) * 3); top: calc(var(--u) * 100); width: calc(var(--u) * 6); } .d-b4 { right: calc(var(--u) * 20); top: calc(var(--u) * 4); width: calc(var(--u) * 5); }
+.d-pearl-l, .d-pearl-r { position: absolute; z-index: 4; bottom: calc(var(--u) * 3); width: calc(var(--u) * 4); } .d-pearl-l { left: calc(var(--u) * 33); } .d-pearl-r { right: calc(var(--u) * 29); }
+
+/* entrance (runs once the card is revealed) */
+.iv-in { opacity: 0; transform: translateY(14px); }
+.stage-open .iv-in { animation: ivin .9s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: calc(var(--i, 0) * .14s + .3s); }
+@keyframes ivin { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .iv-in { opacity: 1; transform: none; animation: none !important; } }
+
+/* RSVP */
+.iv-rsvp { position: relative; overflow: clip; padding: calc(var(--u) * 24) calc(var(--u) * 4) calc(var(--u) * 28); min-height: 100svh; background: linear-gradient(180deg, rgba(246,197,219,0), rgba(246,197,219,.3) 30%, rgba(203,183,239,.45)); display: flex; align-items: center; }
+.iv-rsvp > div { width: 100%; }
+.iv-rsvp .rsvp-card { width: 100%; }

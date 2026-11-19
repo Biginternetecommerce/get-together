@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Great_Vibes, Cormorant_Garamond, Nunito } from "next/font/google";
 import "./globals.css";
+import "./invite.css";
 import { invitation } from "@/config/invitation";
 
 const script = Great_Vibes({ weight: "400", subsets: ["latin"], variable: "--font-script", display: "swap" });
 const sans = Nunito({ weight: ["400", "600", "700", "800"], subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const serif = Cormorant_Garamond({ weight: ["400", "500", "600", "700"], subsets: ["latin"], variable: "--font-serif", display: "swap" });
+const serif = Cormorant_Garamond({ weight: ["400", "500", "600", "700"], style: ["normal", "italic"], subsets: ["latin"], variable: "--font-serif", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(invitation.siteUrl),
