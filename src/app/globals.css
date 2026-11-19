@@ -326,3 +326,6 @@ label.lbl { display: block; text-align: left; font-weight: 800; font-size: .95re
 .rs-shell:hover .rs-art, .rs-shell:focus-visible .rs-art { filter: none; transform: none; }
 .rs-shell:focus-visible .rs-label { outline: 3px solid #7b4aa8; outline-offset: 2px; }
 .dress-3d { position: absolute; inset: -4% -24%; z-index: 3; pointer-events: none; }
+.rs-guests { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; min-width: 0; } .rs-guests legend { padding: 0; }
+.rs-guests legend.lbl { margin: 14px 4px 6px; float: left; width: 100%; } .rs-guests legend + * { clear: both; }
+.rs-steps { margin: 2px 0 6px; text-align: center; font: 800 .78rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: #8a64c4; }

@@ -52,3 +52,24 @@
 .iv.wide .iv-card { padding-top: calc(var(--u) * 6); padding-bottom: calc(var(--u) * 5); }
 .iv.wide .iv-when { margin-top: calc(var(--u) * 4.5); } .iv.wide .iv-where { margin-top: calc(var(--u) * 3.5); } .iv.wide .iv-hr { margin-top: calc(var(--u) * 3.5); }
 .iv.wide .iv-shells { margin-top: calc(var(--u) * 2.4); }
+
+/* wide screens: respect the same floors, and never let fixed UI sit under a notch */
+.iv.wide .iv-tag { font-size: max(calc(var(--u) * 4.5), 13px); }
+.iv.wide .iv-colors { font-size: max(calc(var(--u) * 3.5), 11px); }
+.iv.wide .iv-date p small, .iv.wide .iv-where p small { font-size: max(calc(var(--u) * 3.9), 12px); }
+.iv.wide .iv-date p span, .iv.wide .iv-where p span { font-size: max(calc(var(--u) * 4.6), 14px); }
+.iv.wide .iv-time p { font-size: max(calc(var(--u) * 5.2), 15px) !important; }
+.iv.wide .iv-dress { font-size: max(calc(var(--u) * 5.2), 15px); }
+.iv.wide .iv-close { font-size: max(calc(var(--u) * 4.5), 14px); }
+.iv.wide .iv-kicker { font-size: max(calc(var(--u) * 5.6), 16px); }
+
+/* fit-to-height: the whole card + shells always sit inside one screen; floors only kick in on very short windows */
+.iv.wide { --u: calc(100svh / 188); }
+.iv.wide .iv-tag { font-size: max(calc(var(--u) * 4.5), 11px); }
+.iv.wide .iv-colors { font-size: max(calc(var(--u) * 3.5), 9px); }
+.iv.wide .iv-date p small, .iv.wide .iv-where p small { font-size: max(calc(var(--u) * 3.9), 10px); }
+.iv.wide .iv-date p span, .iv.wide .iv-where p span { font-size: max(calc(var(--u) * 4.6), 11px); }
+.iv.wide .iv-time p { font-size: max(calc(var(--u) * 5.2), 12px) !important; }
+.iv.wide .iv-dress { font-size: max(calc(var(--u) * 5.2), 12px); }
+.iv.wide .iv-close { font-size: max(calc(var(--u) * 4.5), 11px); }
+.iv.wide .iv-kicker { font-size: max(calc(var(--u) * 5.6), 12px); }

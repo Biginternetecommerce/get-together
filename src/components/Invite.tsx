@@ -91,9 +91,10 @@ export default function Invite() {
 
       {/* tap to open - a tap is required so the phone allows the music to play */}
       <div className="iv-cover" aria-hidden={stage !== "cover"}>
+        <p className="iv-open-line">{cfg.copy.envelopeLine}</p>
         <button className="iv-open" onClick={start} tabIndex={stage === "cover" ? 0 : -1}>
           <span className="iv-open-ring" />
-          <span className="iv-open-txt">Tap to open</span>
+          <span className="iv-open-txt">{wide ? "Click to open" : "Tap to open"}</span>
           <small>{noVideo ? "Aurora’s invitation" : "🔊 turn on your sound"}</small>
         </button>
       </div>

@@ -45,7 +45,7 @@ export default function Admin() {
       <h2 className="mt-8 text-2xl">RSVPs</h2>
       <div className="mt-2 space-y-2">
         {data.rsvps.map((r) => (
-          <div key={r.id} className={box}><b>{r.name}</b> - {r.attending ? `Yes (${r.guests})` : "No"} <span className="text-xs opacity-60">{new Date(r.created_at).toLocaleString()}</span>{r.message && <p className="italic">{r.message}</p>}</div>
+          <div key={r.id} className={box}><b>{r.name}</b> - {r.attending ? `Yes (${r.guests})` : "No"} <span className="text-xs opacity-60">{new Date(r.created_at).toLocaleString()}</span>{r.phone && <span className="text-sm"> · {r.phone}</span>}{r.guest_names?.length > 0 && <p className="text-sm">With: {r.guest_names.join(", ")}</p>}{r.message && <p className="italic">{r.message}</p>}</div>
         ))}
         {!data.rsvps.length && <p className="opacity-60">No RSVPs yet.</p>}
       </div>

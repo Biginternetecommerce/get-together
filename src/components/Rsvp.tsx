@@ -3,8 +3,20 @@ import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Octopus, Pearl, Shell, Sparkle } from "./Art";
 import { chime } from "@/lib/sound";
+import { invitation as cfg } from "@/config/invitation";
 import ShellButton3D from "./ShellButton3D";
 import Lazy3D from "./Lazy3D";
+
+function addToCalendar() {
+  const ev = cfg.event; if (!ev.startIso) return;
+  const start = new Date(ev.startIso), end = new Date(start.getTime() + ev.durationHours * 3600_000);
+  const f = (d: Date) => d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
+  const esc = (t: string) => t.replace(/[,;]/g, (m) => "\\" + m);
+  const body = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Aurora//Invitation//EN", "BEGIN:VEVENT", `UID:aurora-${f(start)}@invite`, `DTSTAMP:${f(new Date())}`, `DTSTART:${f(start)}`, `DTEND:${f(end)}`,
+    `SUMMARY:${esc(ev.title)}`, `LOCATION:${esc(`${ev.venue}, ${ev.address}`)}`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([body], { type: "text/calendar" })); a.download = "aurora-celebration.ics"; a.click();
+}
+const directions = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cfg.event.mapsQuery)}`, "_blank", "noopener");
 
 type Step = "choose" | "yes" | "no" | "doneYes" | "doneNo";
 
@@ -12,6 +24,9 @@ export default function Rsvp({ firstName }: { firstName: string }) {
   const [step, setStep] = useState<Step>("choose");
   const [name, setName] = useState("");
   const [guests, setGuests] = useState(1);
+  const [part, setPart] = useState(1); // "yes" form is split into 2 parts
+  const [phone, setPhone] = useState("");
+  const [names, setNames] = useState<string[]>([]); // names of guests 2..n
   const [message, setMessage] = useState("");
   const [website, setWebsite] = useState(""); // honeypot
   const [openedAt, setOpenedAt] = useState(0);
@@ -27,6 +42,7 @@ export default function Rsvp({ firstName }: { firstName: string }) {
   }, [step]);
 
   function choose(s: "yes" | "no", el: HTMLElement) {
+    setPart(1);
     setOpenedAt(Date.now());
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (s === "yes") chime();
@@ -52,10 +68,17 @@ export default function Rsvp({ firstName }: { firstName: string }) {
     e.preventDefault();
     if (sending) return;
     setErr("");
+    const two = attending && part === 1; // part 1 of 2: validate details, then move on
     if (!name.trim()) { setErr("Please tell us your name."); return; }
+    const digits = phone.replace(/\D/g, "");
+    if (attending && digits.length < 7) { setErr("Please add a phone / WhatsApp number we can reach you on."); return; }
+    if (phone.trim() && (digits.length < 7 || digits.length > 15)) { setErr("That phone number doesn't look right."); return; }
+    if (two) { setPart(2); return; }
+    const guestNames = attending ? Array.from({ length: guests - 1 }, (_, i) => (names[i] || "").trim()) : [];
+    if (guestNames.some((n) => !n)) { setErr("Please add the name of every guest who is coming."); return; }
     setSending(true);
     try {
-      const r = await fetch("/api/rsvp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, attending, guests, message, website, openedAt }) });
+      const r = await fetch("/api/rsvp", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, attending, guests, phone: phone.trim(), guestNames, message, website, openedAt }) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j.error || "Something went wrong. Please try again.");
       setStep(attending ? "doneYes" : "doneNo");
@@ -64,6 +87,7 @@ export default function Rsvp({ firstName }: { firstName: string }) {
     finally { setSending(false); }
   }
 
+  const p1 = step === "no" || part === 1, p2 = step === "no" || part === 2;
   const first = name.trim().split(" ")[0];
   return (
     <div ref={box} className="rsvp-card">
@@ -92,8 +116,12 @@ export default function Rsvp({ firstName }: { firstName: string }) {
           <form onSubmit={(e) => submit(step === "yes", e)} noValidate>
             <Octopus mood={step === "yes" ? "cheer" : "sleep"} className="rs-oct" />
             <h2 className="h-display sm">{step === "yes" ? "Yay! Tell us who's coming" : "We'll miss you"}</h2>
-            <label className="lbl" htmlFor="rs-name">Your name</label>
+            {step === "yes" && <p className="rs-steps">Step {part} of 2 · {part === 1 ? "About you" : "Your guests"}</p>}
+            {p1 && <>
+            <label className="lbl" htmlFor="rs-name">{step === "yes" ? "Your full name" : "Your name"}</label>
             <input id="rs-name" className="field" value={name} onChange={(e) => setName(e.target.value)} maxLength={80} autoComplete="name" placeholder="Your full name" />
+            <label className="lbl" htmlFor="rs-ph">Phone / WhatsApp number{step === "no" ? " (optional)" : ""}</label>
+            <input id="rs-ph" className="field" type="tel" inputMode="tel" autoComplete="tel" value={phone} onChange={(e) => setPhone(e.target.value.replace(/[^\d+\-\s()]/g, "").slice(0, 20))} placeholder="+91 98765 43210" />
             {step === "yes" && (
               <>
                 <label className="lbl" htmlFor="rs-g">Number of guests (including you)</label>
@@ -104,13 +132,29 @@ export default function Rsvp({ firstName }: { firstName: string }) {
                 </div>
               </>
             )}
+            </>}
+            {p2 && <>
+            {step === "yes" && (
+              <>
+                {guests > 1 && (
+                  <fieldset className="rs-guests">
+                    <legend className="lbl">Name of each guest coming with you</legend>
+                    {Array.from({ length: guests - 1 }, (_, i) => (
+                      <input key={i} className="field" aria-label={`Guest ${i + 2} name`} value={names[i] || ""} maxLength={80} placeholder={`Guest ${i + 2} full name`}
+                        onChange={(e) => setNames((p) => { const n = [...p]; n[i] = e.target.value; return n; })} />
+                    ))}
+                  </fieldset>
+                )}
+              </>
+            )}
             <label className="lbl" htmlFor="rs-m">A message for the family (optional)</label>
-            <textarea id="rs-m" className="field" rows={3} maxLength={500} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={step === "yes" ? "Warm wishes, dietary needs..." : "A kind word for Aurora"} />
+            <textarea id="rs-m" className="field" rows={3} maxLength={500} value={message} onChange={(e) => setMessage(e.target.value)} placeholder={step === "yes" ? "A blessing or note for the family" : "A kind word for Aurora"} />
+            </>}
             <input className="hp" tabIndex={-1} autoComplete="off" aria-hidden value={website} onChange={(e) => setWebsite(e.target.value)} name="website" />
             {err && <p role="alert" className="form-err">{err}</p>}
             <div className="form-actions">
-              <button type="button" className="cta ghost" onClick={() => setStep("choose")}>Back</button>
-              <button className="cta" disabled={sending}>{sending ? "Sending..." : step === "yes" ? "Confirm RSVP" : "Send reply"}</button>
+              <button type="button" className="cta ghost" onClick={() => { setErr(""); if (step === "yes" && part === 2) setPart(1); else setStep("choose"); }}>Back</button>
+              <button className="cta" disabled={sending}>{sending ? "Sending..." : step === "yes" ? (part === 1 ? "Next" : "Confirm RSVP") : "Send reply"}</button>
             </div>
           </form>
         )}
@@ -120,7 +164,11 @@ export default function Rsvp({ firstName }: { firstName: string }) {
             <Octopus mood="cheer" className="rs-oct big" />
             <h2 className="script done-script">Yay{first ? `, ${first}` : ""}!</h2>
             <p className="done-line">We can&apos;t wait to celebrate with you!</p>
-            <p className="rs-sub">Your reply for {guests} {guests === 1 ? "guest" : "guests"} has been saved.</p>
+            <p className="rs-sub">Your reply for {guests} {guests === 1 ? "guest" : "guests"} has been saved{guests > 1 ? `: ${[name.trim(), ...names.slice(0, guests - 1).map((n) => n.trim())].join(", ")}` : ""}.</p>
+            <div className="rs-after">
+              {cfg.event.startIso && <button type="button" className="cta ghost" onClick={addToCalendar}>Add to Calendar</button>}
+              {cfg.event.mapsQuery && <button type="button" className="cta ghost" onClick={directions}>Get Directions</button>}
+            </div>
             <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>{[0, 1, 2].map((i) => <Pearl key={i} className="bob" style={{ width: 22, animationDelay: `${i * 0.4}s` }} />)}</div>
           </div>
         )}

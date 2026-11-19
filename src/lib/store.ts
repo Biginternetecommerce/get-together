@@ -4,7 +4,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
 
-export type Rsvp = { id: string; name: string; attending: boolean; guests: number; message: string | null; created_at: string };
+export type Rsvp = { id: string; name: string; attending: boolean; guests: number; phone: string | null; guest_names: string[]; message: string | null; created_at: string };
 export type Wish = { id: string; name: string; message: string; approved: boolean; created_at: string };
 
 const url = process.env.SUPABASE_URL;

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: { title: "A Sea of Blessings for Aurora", description: "A little magic awaits beneath the waves...", type: "website" },
   robots: { index: false, follow: false }, // private family invitation
 };
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#7cc4e4" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#7cc4e4" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
