@@ -64,6 +64,21 @@ export default function Invite() {
   useEffect(() => { const t = setTimeout(() => setReady(true), 7000); return () => clearTimeout(t); }, []); // never keep anyone waiting longer than this
   useEffect(() => { setReady(false); const el = v.current; if (el && el.readyState >= 4) setReady(true); }, [wide]);
 
+  // mobile scroll hint: shown on the right edge until the guest starts scrolling
+  // "Scroll" on the invitation, "Location" while on the RSVP section, hidden elsewhere
+  const [hint, setHint] = useState<"Scroll" | "Location" | null>("Scroll");
+  useEffect(() => {
+    if (stage !== "open" || wide) return;
+    const on = () => {
+      const vh = window.innerHeight;
+      const top = (id: string) => document.getElementById(id)?.getBoundingClientRect().top ?? Infinity;
+      if (top("location") < vh * 0.6) return setHint(null);
+      if (top("rsvp") < vh * 0.5) return setHint("Location");
+      setHint(window.scrollY > 60 ? null : "Scroll");
+    };
+    on(); window.addEventListener("scroll", on, { passive: true }); return () => window.removeEventListener("scroll", on);
+  }, [stage, wide]);
+
   function finish() { setStage("open"); window.scrollTo(0, 0); lp.current?.play().catch(() => {}); } // reef keeps moving behind the card
 
   async function start() {
@@ -104,6 +119,8 @@ export default function Invite() {
         {panel > 0 && <button className="iv-nav prev" onClick={() => setPanel(panel - 1)} aria-label="Previous"><b>‹</b><span>{panel === 1 ? "Invitation" : "RSVP"}</span></button>}
         {panel < 2 && <button className={`iv-nav next${panel === 0 ? " big" : ""}`} onClick={() => setPanel(panel + 1)} aria-label="Next"><span>{panel === 0 ? "RSVP" : "Location"}</span><b>›</b></button>}
       </>}
+
+      {stage === "open" && !wide && <div className={`iv-scrollhint${hint ? "" : " gone"}`} aria-hidden><span>{hint ?? "Scroll"}</span><i /></div>}
 
       <main className="iv-main" aria-hidden={stage !== "open"}>
        <div className="iv-track">

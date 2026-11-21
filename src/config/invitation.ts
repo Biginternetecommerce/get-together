@@ -19,10 +19,10 @@ export const invitation = {
   event: {
     title: "A Sea of Blessings for Aurora",
     // ISO local start e.g. "2026-09-06T15:00:00" - leave null until confirmed (enables Add to Calendar)
-    startIso: "2026-12-29T11:30:00" as string | null,
+    startIso: "2026-12-29T12:00:00" as string | null,
     durationHours: 3,
     dateText: "Tuesday, 29 December 2026",
-    timeText: "11:30 AM",
+    timeText: "12:00 PM",
     venue: "The North Avenue",
     address: "Mysore",
     // Used for Get Directions. Leave "" until confirmed.
@@ -45,7 +45,7 @@ export const invitation = {
     body: "With hearts full of love, we invite you to join us as we celebrate our precious Aurora and shower her with your love, prayers and blessings.",
     dateLine1: "Tuesday,",
     dateLine2: "29 December 2026",
-    time: "11:30 AM",
+    time: "12:00 PM",
     venueLine1: "The North Avenue,",
     venueLine2: "Mysore",
     dressTitle: "Dress in a Splash of Ocean Pastels",
