@@ -13,7 +13,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(invitation.siteUrl),
   title: "A Sea of Blessings for Aurora",
   description: "You're invited to Aurora's magical underwater world.",
-  openGraph: { title: "A Sea of Blessings for Aurora", description: "A little magic awaits beneath the waves...", type: "website" },
+  openGraph: {
+    title: "A Sea of Blessings for Aurora", description: "A little magic awaits beneath the waves...", type: "website", siteName: "Aurora's Invitation",
+    images: [{ url: "/media/og.jpg", width: 1200, height: 630, alt: "Aurora's magical underwater invitation" }],
+  },
+  twitter: { card: "summary_large_image", title: "A Sea of Blessings for Aurora", description: "A little magic awaits beneath the waves...", images: ["/media/og.jpg"] },
   robots: { index: false, follow: false }, // private family invitation
 };
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#7cc4e4" };

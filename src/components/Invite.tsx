@@ -64,6 +64,20 @@ export default function Invite() {
   useEffect(() => { const t = setTimeout(() => setReady(true), 7000); return () => clearTimeout(t); }, []); // never keep anyone waiting longer than this
   useEffect(() => { setReady(false); const el = v.current; if (el && el.readyState >= 4) setReady(true); }, [wide]);
 
+  // stop the music when the guest leaves the page / locks the phone / switches app; resume when they come back
+  useEffect(() => {
+    const au = a.current;
+    if (!au || stage === "cover") return;
+    const sync = () => {
+      if (document.hidden) { au.pause(); lp.current?.pause(); }
+      else { au.play().catch(() => {}); if (stage === "open") lp.current?.play().catch(() => {}); }
+    };
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    window.addEventListener("pagehide", () => au.pause());
+    return () => { document.removeEventListener("visibilitychange", sync); };
+  }, [stage]);
+
   // mobile scroll hint: shown on the right edge until the guest starts scrolling
   // "Scroll" on the invitation, "Location" while on the RSVP section, hidden elsewhere
   const [hint, setHint] = useState<"Scroll" | "Location" | null>("Scroll");
