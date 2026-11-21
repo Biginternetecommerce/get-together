@@ -64,18 +64,32 @@ export default function Invite() {
   useEffect(() => { const t = setTimeout(() => setReady(true), 7000); return () => clearTimeout(t); }, []); // never keep anyone waiting longer than this
   useEffect(() => { setReady(false); const el = v.current; if (el && el.readyState >= 4) setReady(true); }, [wide]);
 
-  // stop the music when the guest leaves the page / locks the phone / switches app; resume when they come back
+  // stop the music when the guest leaves the page / locks the phone / switches app; resume when they come back.
+  // Phones and in-app browsers (WhatsApp etc.) differ in which event they fire, so listen to all of them + a heartbeat.
   useEffect(() => {
     const au = a.current;
     if (!au || stage === "cover") return;
-    const sync = () => {
-      if (document.hidden) { au.pause(); lp.current?.pause(); }
-      else { au.play().catch(() => {}); if (stage === "open") lp.current?.play().catch(() => {}); }
-    };
-    sync();
+    const away = () => document.hidden || document.visibilityState !== "visible";
+    const stop = () => { au.pause(); lp.current?.pause(); };
+    const go = () => { if (away()) return; au.play().catch(() => {}); if (stage === "open") lp.current?.play().catch(() => {}); };
+    const sync = () => (away() ? stop() : go());
+    const beat = setInterval(() => { if (away() && !au.paused) stop(); }, 400);
     document.addEventListener("visibilitychange", sync);
-    window.addEventListener("pagehide", () => au.pause());
-    return () => { document.removeEventListener("visibilitychange", sync); };
+    window.addEventListener("pagehide", stop);
+    window.addEventListener("blur", stop);
+    document.addEventListener("freeze", stop);
+    window.addEventListener("pageshow", go);
+    window.addEventListener("focus", go);
+    sync();
+    return () => {
+      clearInterval(beat);
+      document.removeEventListener("visibilitychange", sync);
+      window.removeEventListener("pagehide", stop);
+      window.removeEventListener("blur", stop);
+      document.removeEventListener("freeze", stop);
+      window.removeEventListener("pageshow", go);
+      window.removeEventListener("focus", go);
+    };
   }, [stage]);
 
   // mobile scroll hint: shown on the right edge until the guest starts scrolling
