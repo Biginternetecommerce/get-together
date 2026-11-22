@@ -148,7 +148,7 @@ export default function Invite() {
         {panel < 2 && <button className={`iv-nav next${panel === 0 ? " big" : ""}`} onClick={() => setPanel(panel + 1)} aria-label="Next"><span>{panel === 0 ? "RSVP" : "Location"}</span><b>›</b></button>}
       </>}
 
-      {stage === "open" && !wide && <div className={`iv-scrollhint${hint ? "" : " gone"}`} aria-hidden><span>{hint ?? "Scroll"}</span><i /></div>}
+      {stage === "open" && !wide && <div className={`iv-scrollhint${hint ? "" : " gone"}`} aria-hidden><div className="iv-dtrack"><svg className="iv-dolphin" viewBox="0 0 120 60" width="52" height="26"><defs><linearGradient id="dg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#6f9be6" /><stop offset=".55" stopColor="#a592ea" /><stop offset="1" stopColor="#f7dcf1" /></linearGradient></defs><path d="M3 20C10 22 15 27 21 33C36 23 52 11 76 11C92 11 104 19 114 28C117 31 115 34 111 34L99 35C92 44 80 50 64 50C48 50 34 45 22 40C16 43 9 46 3 47C6 41 9 37 14 35C9 33 6 27 3 20Z" fill="url(#dg)" stroke="#5b3d9c" strokeWidth="1.6" strokeLinejoin="round" /><path d="M58 13C62 4 70 0 77 2C72 6 72 10 75 13Z" fill="#7d8fe6" stroke="#5b3d9c" strokeWidth="1.4" strokeLinejoin="round" /><path d="M80 40C78 50 71 55 63 57C66 51 68 46 71 41Z" fill="#c4b3f1" stroke="#5b3d9c" strokeWidth="1.4" strokeLinejoin="round" /><path d="M112 33C106 37 100 37 96 35" fill="none" stroke="#5b3d9c" strokeWidth="1.3" strokeLinecap="round" /><circle cx="95" cy="27" r="2" fill="#2e1760" /><circle cx="95.7" cy="26.3" r=".7" fill="#fff" /></svg><i className="iv-ripple" /><i className="iv-ripple r2" /></div><span>{hint ?? "Scroll"}</span></div>}
 
       <main className="iv-main" aria-hidden={stage !== "open"}>
        <div className="iv-track">

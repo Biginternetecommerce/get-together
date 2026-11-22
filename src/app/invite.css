@@ -284,3 +284,44 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .iv-scrollhint { right: 4px; padding: 12px 6px 10px; border-radius: 999px; background: rgba(255,255,255,.88); border: 1px solid rgba(138,100,196,.45); box-shadow: 0 4px 14px rgba(106,74,168,.35); }
 .iv-scrollhint span { font-size: 12px; font-weight: 700; text-shadow: none; }
 .iv-scrollhint i { width: 12px; height: 12px; border-width: 3px; filter: none; }
+
+/* ===== v7: larger, easier-to-read type on phones (+~2px on every line) ===== */
+.iv:not(.wide) .iv-kicker { font-size: max(calc(var(--u) * 3.5 + 1px), 12.5px); }
+.iv:not(.wide) .iv-head { font-size: max(calc(var(--u) * 3.9 + 1px), 14.5px); }
+.iv:not(.wide) .iv-body { font-size: max(calc(var(--u) * 3.2 + 1px), 13.5px); }
+.iv:not(.wide) .iv-date p span, .iv:not(.wide) .iv-where p span { font-size: max(calc(var(--u) * 3.7 + 1px), 14px); }
+.iv:not(.wide) .iv-date p small, .iv:not(.wide) .iv-where p small { font-size: max(calc(var(--u) * 3 + 1px), 12.5px); }
+.iv:not(.wide) .iv-time p { font-size: max(calc(var(--u) * 4.1 + 1px), 15px) !important; }
+.iv:not(.wide) .iv-colors { font-size: max(calc(var(--u) * 2.7 + 1px), 11.5px); }
+.iv:not(.wide) .iv-dress { font-size: max(calc(var(--u) * 6 + 2px), 21px) !important; }
+.iv:not(.wide) .iv-wish { font-size: max(calc(var(--u) * 3.8 + 1px), 14px); }
+.iv:not(.wide) .iv-wait { font-size: max(calc(var(--u) * 3.1 + 1px), 13px); }
+.iv:not(.wide) .iv-with span { font-size: max(calc(var(--u) * 3.3 + 1px), 13.5px); }
+.iv:not(.wide) .iv-with b { font-size: calc(var(--u) * 6.4 + 1px); }
+.iv:not(.wide) .iv-celebrating { font-size: calc(var(--u) * 9 + 0px); }
+.iv:not(.wide) .iv-sub { font-size: calc(var(--u) * 6.2 + 0px); }
+.iv:not(.wide) .iv-when svg, .iv:not(.wide) .iv-where svg { width: calc(var(--u) * 7.6); height: calc(var(--u) * 7.6); }
+
+.iv:not(.wide) .iv-kicker { letter-spacing: .08em; }
+.iv:not(.wide) .iv-card { padding-left: calc(var(--u) * 4); padding-right: calc(var(--u) * 4); }
+/* scroll hint: a dolphin leaps in an arc from the top down into the water, pointing the way */
+.iv-scrollhint { right: 3px; padding: 6px 3px 5px; width: 36px; gap: 2px; border-radius: 30px; background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(226,238,255,.9) 70%, rgba(190,216,250,.92)); border: 1px solid rgba(138,100,196,.4); box-shadow: 0 6px 18px rgba(80,70,170,.35); }
+.iv-scrollhint i { display: none; }
+.iv-scrollhint > span { writing-mode: vertical-rl; font-size: 10px; letter-spacing: .22em; text-indent: 0; margin-top: 4px; font-weight: 700; color: #4b2f8a; text-indent: .14em; }
+.iv-dtrack { position: relative; width: 30px; height: 96px; }
+.iv-dolphin { position: absolute; left: 0; top: 0; width: 30px; height: auto; overflow: visible; filter: drop-shadow(0 2px 3px rgba(60,40,130,.3)); animation: ivLeap 2.6s ease-in-out infinite; transform-origin: 50% 50%; }
+.iv-dtrack .iv-ripple { display: block; position: absolute; left: 3px; bottom: 3px; width: 24px; height: 7px; border-radius: 50%; border: 2px solid rgba(91,61,156,.55); opacity: 0; animation: ivRipple 2.6s ease-out infinite; }
+.iv-dtrack .iv-ripple.r2 { animation-delay: .18s; }
+@keyframes ivLeap {
+  0%   { transform: translate(7px, 0) rotate(60deg); opacity: 0; }
+  8%   { opacity: 1; }
+  22%  { transform: translate(-7px, 17px) rotate(122deg); }
+  42%  { transform: translate(7px, 34px) rotate(58deg); }
+  60%  { transform: translate(0, 52px) rotate(90deg); }
+  86%  { transform: translate(0, 80px) rotate(90deg); opacity: 1; }
+  100% { transform: translate(0, 90px) rotate(90deg); opacity: 0; }
+}
+@keyframes ivRipple { 0%, 84% { transform: scale(.2); opacity: 0; } 88% { opacity: .9; } 100% { transform: scale(1.1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .iv-dolphin, .iv-dtrack .iv-ripple { animation: none; } .iv-dolphin { transform: translate(0, 60px) rotate(40deg); } }
+
+.iv:not(.wide) .iv-body, .iv:not(.wide) .iv-head { max-width: 92%; margin-left: auto; margin-right: auto; }
