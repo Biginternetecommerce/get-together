@@ -57,7 +57,7 @@ export default function Invite() {
   useEffect(() => { document.body.classList.toggle("locked", stage !== "open" || !!wide); return () => document.body.classList.remove("locked"); }, [stage, wide]);
   useEffect(() => {
     if (!wide) return;
-    const k = (e: KeyboardEvent) => { if (e.key === "ArrowRight") setPanel((p) => Math.min(2, p + 1)); if (e.key === "ArrowLeft") setPanel((p) => Math.max(0, p - 1)); };
+    const k = (e: KeyboardEvent) => { const t = e.target as HTMLElement | null; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return; if (e.key === "ArrowRight") setPanel((p) => Math.min(2, p + 1)); if (e.key === "ArrowLeft") setPanel((p) => Math.max(0, p - 1)); };
     window.addEventListener("keydown", k); return () => window.removeEventListener("keydown", k);
   }, [wide]);
 

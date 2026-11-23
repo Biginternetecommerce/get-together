@@ -113,3 +113,4 @@
 /* v8: date a little bigger for readability (50+ guests) */
 .iv.wide .iv-date p span { font-size: max(calc(var(--u) * 5.6), 15px); }
 .iv.wide .iv-date p small { font-size: max(calc(var(--u) * 4.6), 13px); }
+.iv.wide .iv-time p { font-size: max(calc(var(--u) * 6.2), 16px) !important; }
