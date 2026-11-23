@@ -325,3 +325,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 @media (prefers-reduced-motion: reduce) { .iv-dolphin, .iv-dtrack .iv-ripple { animation: none; } .iv-dolphin { transform: translate(0, 60px) rotate(40deg); } }
 
 .iv:not(.wide) .iv-body, .iv:not(.wide) .iv-head { max-width: 92%; margin-left: auto; margin-right: auto; }
+
+/* v8: date a little bigger for readability (50+ guests) */
+.iv:not(.wide) .iv-date p span { font-size: max(calc(var(--u) * 3.7 + 4px), 17px); }
+.iv:not(.wide) .iv-date p small { font-size: max(calc(var(--u) * 3 + 3px), 15px); }

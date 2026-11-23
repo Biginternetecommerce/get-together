@@ -109,3 +109,7 @@
 .iv.wide .iv-sec { padding-top: calc(var(--u) * 22); }
 .iv.wide .iv-crest { width: calc(var(--u) * 24); top: 0; }
 .iv.wide .iv-card { padding-top: calc(var(--u) * 4.5); }
+
+/* v8: date a little bigger for readability (50+ guests) */
+.iv.wide .iv-date p span { font-size: max(calc(var(--u) * 5.6), 15px); }
+.iv.wide .iv-date p small { font-size: max(calc(var(--u) * 4.6), 13px); }
