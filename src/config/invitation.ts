@@ -19,9 +19,9 @@ export const invitation = {
   event: {
     title: "A Sea of Blessings for Aurora",
     // ISO local start e.g. "2026-09-06T15:00:00" - leave null until confirmed (enables Add to Calendar)
-    startIso: "2026-12-29T12:00:00" as string | null,
+    startIso: "2027-01-02T12:00:00" as string | null,
     durationHours: 3,
-    dateText: "Tuesday, 29 December 2026",
+    dateText: "Saturday, 2 January 2027",
     timeText: "12:00 PM",
     venue: "The North Avenue",
     address: "Mysore",
@@ -43,8 +43,8 @@ export const invitation = {
     subtitle: "Our little ocean of happiness",
     headline: "A little celebration, a lifetime of blessings...",
     body: "With hearts full of love, we invite you to join us as we celebrate our precious Aurora and shower her with your love, prayers and blessings.",
-    dateLine1: "Tuesday,",
-    dateLine2: "29 December 2026",
+    dateLine1: "Saturday,",
+    dateLine2: "2 January 2027",
     time: "12:00 PM",
     venueLine1: "The North Avenue,",
     venueLine2: "Mysore",
